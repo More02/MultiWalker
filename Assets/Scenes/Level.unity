@@ -1108,7 +1108,6 @@ GameObject:
   - component: {fileID: 789569314}
   - component: {fileID: 789569313}
   - component: {fileID: 789569312}
-  - component: {fileID: 789569317}
   - component: {fileID: 789569316}
   m_Layer: 0
   m_Name: Cube
@@ -1207,24 +1206,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc18dd53951f2604cb488b3ffb135b6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  camera: {fileID: 963194228}
---- !u!54 &789569317
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 789569311}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  _moveSpeed: 5
+  _cameraTransform: {fileID: 963194228}
 --- !u!1001 &800224388
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1620,10 +1603,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 572a1c2ed7d3f2d4c8728d976b4dfa50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 789569315}
-  distance: 5
-  height: 2
-  rotationSpeed: 5
+  _target: {fileID: 789569315}
+  _distance: 5
+  _height: 2
+  _rotationSpeed: 5
 --- !u!1001 &1014180598
 PrefabInstance:
   m_ObjectHideFlags: 0
