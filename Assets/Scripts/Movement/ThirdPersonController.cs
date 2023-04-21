@@ -16,10 +16,7 @@ namespace Movement
 
         private void LateUpdate()
         {
-            _mouseX = Input.GetAxis("Mouse X") * Sensitivity;
-            _mouseY = Input.GetAxis("Mouse Y") * Sensitivity;
-            _currentRotationX += _mouseX;
-            _currentRotationY -= _mouseY;
+            GetMousePosition();
             _currentRotationY = Mathf.Clamp(_currentRotationY, -90f, 90f);
 
             var rotation = Quaternion.Euler(0f, _currentRotationX, 0f);
@@ -30,6 +27,14 @@ namespace Movement
             transform.position = targetPosition + _offset;
             transform.LookAt(targetPosition);
             transform.rotation = Quaternion.Euler(_currentRotationY, _currentRotationX, 0f);
+        }
+
+        private void GetMousePosition()
+        {
+            _mouseX = Input.GetAxis("Mouse X") * Sensitivity;
+            _mouseY = Input.GetAxis("Mouse Y") * Sensitivity;
+            _currentRotationX += _mouseX;
+            _currentRotationY -= _mouseY;
         }
     }
 }
