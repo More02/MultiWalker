@@ -9,14 +9,16 @@ namespace Movement
         private const float MoveSpeed = 10f;
         private Transform _cameraTransform;
 
-        [Obsolete("Obsolete")]
+        public override void OnStartLocalPlayer()
+        {
+            _cameraTransform = Camera.main!.transform;
+            ThirdPersonController.Instance.Target = transform;
+        }
+
         private void FixedUpdate()
         {
-            if (hasAuthority)
-            {
-                Move();
-                _cameraTransform = Camera.main!.transform;
-            }
+            if (!isLocalPlayer) return;
+            Move();
         }
 
         private void Move()

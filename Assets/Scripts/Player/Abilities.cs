@@ -16,28 +16,24 @@ namespace Player
         private Vector3 _startPosition;
         private bool _isMoving;
 
-        [Obsolete("Obsolete")]
-        private void Start()
+        public override void OnStartLocalPlayer()
         {
-            if (hasAuthority)
-            {
-                _rigidbody = gameObject.GetComponent<Rigidbody>();
-                _cameraTransform = Camera.main!.transform;
-            }
+            _rigidbody = gameObject.GetComponent<Rigidbody>();
+            _cameraTransform = Camera.main!.transform;
         }
 
-        [Obsolete("Obsolete")]
         private void Update()
         {
-            if (!hasAuthority) return;
+            if (!isLocalPlayer) return;
+
             if (!Input.GetMouseButtonDown(0)) return;
-            if (_isMoving) return; 
+            if (_isMoving) return;
             _isMoving = true;
             _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
             _startPosition = transform.position;
             StartCoroutine(Dash());
-
         }
+
         private IEnumerator Dash()
         {
             if (!_isMoving) yield break;
@@ -52,6 +48,7 @@ namespace Player
                     _rigidbody.velocity = Vector3.zero;
                     yield break;
                 }
+
                 yield return null;
             }
         }
