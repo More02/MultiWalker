@@ -17,44 +17,33 @@ namespace Player
         private void Start()
         {
             _rigidbody = gameObject.GetComponent<Rigidbody>();
-            _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         }
 
         private void Update()
         {
-            if (!Input.GetKeyDown(KeyCode.Mouse0)) return;
+            if (!Input.GetMouseButtonDown(0)) return;
+            if (_isMoving) return; 
             _isMoving = true;
+            _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
             _startPosition = transform.position;
-            Dash();
-
-            // if (Input.GetMouseButtonUp(0))
-            // {
-            //     _isMoving = false;
-            // }
+            StartCoroutine(Dash());
         }
-
-        private void Dash()
+        private IEnumerator Dash()
         {
-            if (!_isMoving) return;
-            _rigidbody.AddForce(_cameraTransform.forward * (_distance * Force), ForceMode.Impulse);
-            var currentDistance = transform.position - _startPosition;
-            if (!(currentDistance.magnitude >= _distance)) return;
-            _isMoving = false;
-            // _rigidbody.velocity = Vector3.zero;
-            // _rigidbody.angularVelocity = Vector3.zero;
-            _rigidbody.freezeRotation = false;
-            
-            
-            // if (!_isMoving) return;
-            // var targetPosition = transform.position;
-            // targetPosition.z += _distance;
-            // var direction = targetPosition - transform.position;
-            // _rigidbody.AddForce(direction.normalized *  Force, ForceMode.Impulse);
-            // var currentDistance = transform.position - _startPosition;
-            // if (!(currentDistance.magnitude >= _distance)) return;
-            // _isMoving = false;
-            // _rigidbody.freezeRotation = false;
-            
+            if (!_isMoving) yield break;
+            while (true)
+            {
+                _rigidbody.AddForce(_cameraTransform.forward * Force, ForceMode.Impulse);
+                var currentDistance = transform.position - _startPosition;
+                if (currentDistance.magnitude >= _distance)
+                {
+                    _isMoving = false;
+                    _rigidbody.freezeRotation = false;
+                    _rigidbody.velocity = Vector3.zero;
+                    yield break;
+                }
+                yield return null;
+            }
         }
     }
 }
