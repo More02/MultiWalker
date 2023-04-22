@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using Mirror;
 using UnityEngine;
@@ -20,16 +19,15 @@ namespace Player
         {
             _rigidbody = gameObject.GetComponent<Rigidbody>();
             _cameraTransform = Camera.main!.transform;
+            _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         }
 
         private void Update()
         {
             if (!isLocalPlayer) return;
-
             if (!Input.GetMouseButtonDown(0)) return;
             if (_isMoving) return;
             _isMoving = true;
-            _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
             _startPosition = transform.position;
             StartCoroutine(Dash());
         }
@@ -44,7 +42,6 @@ namespace Player
                 if (currentDistance.magnitude >= _distance)
                 {
                     _isMoving = false;
-                    _rigidbody.freezeRotation = false;
                     _rigidbody.velocity = Vector3.zero;
                     yield break;
                 }
