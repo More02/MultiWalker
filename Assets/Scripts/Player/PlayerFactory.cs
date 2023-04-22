@@ -1,43 +1,23 @@
+using Mirror;
 using UnityEngine;
 
 namespace Player
 {
-    public class PlayerFactory : MonoBehaviour
+    public class PlayerFactory : NetworkManager
     {
-        [SerializeField] private Transform _playerPrefab;
-
-        private void InstantiateCards()
+        public override void OnServerAddPlayer(NetworkConnectionToClient conn)
         {
-            var i = 0;
-            while (i < SpawnPointsHolder.Instanse.AllSpawnPoints.Count)
-            {
-                var randomPlace = Random.Range(0, SpawnPointsHolder.Instanse.AllSpawnPoints.Count - 1);
-                if (CheckAddChildrenAvailable(randomPlace))
-                {
-                    Instantiate(_playerPrefab, transform.GetChild(randomPlace));
-                }
-                else
-                {
-                    while (!CheckAddChildrenAvailable(randomPlace))
-                    {
-                        randomPlace = Random.Range(0, SpawnPointsHolder.Instanse.AllSpawnPoints.Count);
-                    }
-
-                    Instantiate(_playerPrefab, transform.GetChild(randomPlace));
-                }
-
-                i++;
-            }
+            InstantiateCard(conn);
         }
 
-        private bool CheckAddChildrenAvailable(int randomPlace)
+        private void InstantiateCard(NetworkConnectionToClient conn)
         {
-            return transform.GetChild(randomPlace).childCount == 0;
-        }
-
-        private void Start()
-        {
-            InstantiateCards();
+            var randomPlace = Random.Range(0, SpawnPointsHolder.Instanse.AllSpawnPoints.Count - 1);
+            var player = Instantiate(playerPrefab, SpawnPointsHolder.Instanse.AllSpawnPoints[randomPlace].position,
+                SpawnPointsHolder.Instanse.AllSpawnPoints[randomPlace].rotation);
+            player.name = $"{playerPrefab.name} [connId={conn.connectionId}]";
+            NetworkServer.AddPlayerForConnection(conn, player.gameObject);
+            SpawnPointsHolder.Instanse.AllSpawnPoints.RemoveAt(randomPlace);
         }
     }
 }
