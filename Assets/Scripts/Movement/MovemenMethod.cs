@@ -1,15 +1,22 @@
+using System;
+using Mirror;
 using UnityEngine;
 
 namespace Movement
 {
-    public class MovemenMethod : MonoBehaviour
+    public class MovemenMethod : NetworkBehaviour
     {
         private const float MoveSpeed = 10f;
-        [SerializeField] private Transform _cameraTransform;
+        private Transform _cameraTransform;
 
+        [Obsolete("Obsolete")]
         private void FixedUpdate()
         {
-            Move();
+            if (hasAuthority)
+            {
+                Move();
+                _cameraTransform = Camera.main!.transform;
+            }
         }
 
         private void Move()

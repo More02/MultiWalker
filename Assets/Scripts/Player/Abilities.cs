@@ -1,32 +1,42 @@
+using System;
 using System.Collections;
+using Mirror;
 using UnityEngine;
 
 namespace Player
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class Abilities : MonoBehaviour
+    public class Abilities : NetworkBehaviour
     {
         private Rigidbody _rigidbody;
         [SerializeField] private float _distance = 5f;
-        [SerializeField] private Transform _cameraTransform;
+        private Transform _cameraTransform;
 
         private const float Force = 3;
         private Vector3 _startPosition;
         private bool _isMoving;
 
+        [Obsolete("Obsolete")]
         private void Start()
         {
-            _rigidbody = gameObject.GetComponent<Rigidbody>();
+            if (hasAuthority)
+            {
+                _rigidbody = gameObject.GetComponent<Rigidbody>();
+                _cameraTransform = Camera.main!.transform;
+            }
         }
 
+        [Obsolete("Obsolete")]
         private void Update()
         {
+            if (!hasAuthority) return;
             if (!Input.GetMouseButtonDown(0)) return;
             if (_isMoving) return; 
             _isMoving = true;
             _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
             _startPosition = transform.position;
             StartCoroutine(Dash());
+
         }
         private IEnumerator Dash()
         {
