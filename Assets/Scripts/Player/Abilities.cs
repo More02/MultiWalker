@@ -31,7 +31,7 @@ namespace Player
         private IEnumerator Dash()
         {
             if (!_isMoving) yield break;
-            while (true)
+            while (_isMoving)
             {
                 _rigidbody.AddForce(_cameraTransform.forward * Force, ForceMode.Impulse);
                 var currentDistance = transform.position - _startPosition;
