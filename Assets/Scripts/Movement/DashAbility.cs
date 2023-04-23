@@ -24,7 +24,6 @@ namespace Movement
         private bool _isDashed;
 
         private IEnumerator _dashCoroutine;
-        //private static DashAbility _collisionDashAbility;
 
         public bool IsDashing { get; private set; }
         public static DashAbility Instance { get; private set; }
