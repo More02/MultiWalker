@@ -1,8 +1,6 @@
-using System;
 using System.Collections;
 using Mirror;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Movement
 {

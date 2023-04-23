@@ -19,6 +19,7 @@ namespace Movement
         private void Awake()
         {
             Instance = this;
+            Cursor.lockState = CursorLockMode.Confined; 
         }
 
         private void LateUpdate()
