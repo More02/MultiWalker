@@ -4,7 +4,7 @@ namespace Movement
 {
     public class ThirdPersonController : MonoBehaviour
     {
-        private const float Distance = 5f;
+        private const float Distance = 3f;
         private const float Height = 2f;
         private const float Sensitivity = 5f;
         private float _currentRotationX;
@@ -46,6 +46,7 @@ namespace Movement
             transform.position = targetPosition + _offset;
             transform.LookAt(targetPosition);
             transform.rotation = Quaternion.Euler(_currentRotationY, _currentRotationX, 0f);
+            Target.rotation = Quaternion.Euler(0f, _currentRotationX, 0f);
         }
     }
 }

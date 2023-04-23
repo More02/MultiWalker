@@ -3,19 +3,14 @@ using UnityEngine;
 
 namespace Movement
 {
-    public class MovementMethod : NetworkBehaviour, IMovable
+    public class MovementMethod : NetworkBehaviour
     {
+        [SerializeField] private Transform _mesh;
         private const float MoveSpeed = 10f;
-        private Transform _cameraTransform;
-        private TypesOfMove _typesOfMove;
-        private TypesOfMove _typeOfMove;
-        private TypesOfMove _nowTypeOfMovement;
 
         public override void OnStartLocalPlayer()
         {
-            _cameraTransform = Camera.main!.transform;
             ThirdPersonController.Instance.Target = transform;
-            NowTypeOfMovement = TypesOfMove.Idle;
         }
 
         private void FixedUpdate()
@@ -28,11 +23,13 @@ namespace Movement
         {
             var horizontal = Input.GetAxis("Horizontal");
             var vertical = Input.GetAxis("Vertical");
-            var movement = _cameraTransform.right * horizontal + _cameraTransform.forward * vertical;
+            var targetTransform = transform;
+            var movement = targetTransform.right * horizontal + targetTransform.forward * vertical;
             movement.y = 0f;
-            transform.position += movement * (MoveSpeed * Time.deltaTime);
+            if (movement.magnitude == 0) return;
+            _mesh.rotation = Quaternion.LookRotation(movement);
+            targetTransform.position += movement * (MoveSpeed * Time.deltaTime);
+            //_rigidbody.MovePosition(targetTransform.position + movement * (MoveSpeed * Time.fixedDeltaTime));
         }
-
-        public TypesOfMove NowTypeOfMovement { get; set; }
     }
 }

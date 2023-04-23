@@ -1,11 +1,13 @@
+using System;
 using System.Collections;
 using Mirror;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Movement
 {
     [RequireComponent(typeof(Rigidbody))]
-    public class Abilities : NetworkBehaviour, IMovable
+    public class Abilities : NetworkBehaviour
     {
         private Rigidbody _rigidbody;
         [SerializeField] private float _distance = 5f;
@@ -13,7 +15,15 @@ namespace Movement
 
         private const float Force = 3;
         private Vector3 _startPosition;
-        private bool _isMoving;
+        
+        public bool IsDashing { get; private set; }
+        
+        public static Abilities Instance { get; private set; }
+
+        private void Start()
+        {
+            Instance = this;
+        }
 
         public override void OnStartLocalPlayer()
         {
@@ -26,22 +36,22 @@ namespace Movement
         {
             if (!isLocalPlayer) return;
             if (!Input.GetMouseButtonDown(0)) return;
-            if (_isMoving) return;
-            _isMoving = true;
+            if (IsDashing) return;
+            IsDashing = true;
             _startPosition = transform.position;
             StartCoroutine(Dash());
         }
 
         private IEnumerator Dash()
         {
-            if (!_isMoving) yield break;
-            while (_isMoving)
+            if (!IsDashing) yield break;
+            while (IsDashing)
             {
                 _rigidbody.AddForce(_cameraTransform.forward * Force, ForceMode.Impulse);
                 var currentDistance = transform.position - _startPosition;
                 if (currentDistance.magnitude >= _distance)
                 {
-                    _isMoving = false;
+                    IsDashing = false;
                     _rigidbody.velocity = Vector3.zero;
                     yield break;
                 }
@@ -49,7 +59,6 @@ namespace Movement
                 yield return null;
             }
         }
-
-        public TypesOfMove NowTypeOfMovement { get; set; }
+        
     }
 }
