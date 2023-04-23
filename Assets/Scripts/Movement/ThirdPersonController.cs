@@ -7,6 +7,7 @@ namespace Movement
         private const float Distance = 3f;
         private const float Height = 2f;
         private const float Sensitivity = 5f;
+        private const float Smooth = 10f;
         private float _currentRotationX;
         private float _currentRotationY;
         private float _mouseX;
@@ -46,8 +47,10 @@ namespace Movement
             var targetPosition = Target.position;
             transform.position = targetPosition + _offset;
             transform.LookAt(targetPosition);
-            transform.rotation = Quaternion.Euler(_currentRotationY, _currentRotationX, 0f);
-            Target.rotation = Quaternion.Euler(0f, _currentRotationX, 0f);
+            //transform.rotation = Quaternion.Euler(_currentRotationY, _currentRotationX, 0f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(_currentRotationY, _currentRotationX, 0f), Smooth*Time.fixedDeltaTime);
+            // Target.rotation = Quaternion.Euler(0f, _currentRotationX, 0f);
+            Target.rotation = Quaternion.Lerp(Target.rotation, Quaternion.Euler(0f, _currentRotationX, 0f), Smooth*Time.fixedDeltaTime);
         }
     }
 }
