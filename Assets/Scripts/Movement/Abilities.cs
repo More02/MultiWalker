@@ -21,12 +21,12 @@ namespace Movement
         private void Start()
         {
             Instance = this;
+            _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         }
 
         public override void OnStartLocalPlayer()
         {
             _rigidbody = gameObject.GetComponent<Rigidbody>();
-            _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         }
 
         private void Update()
