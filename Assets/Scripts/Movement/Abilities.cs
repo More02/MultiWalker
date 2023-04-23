@@ -13,6 +13,7 @@ namespace Movement
 
         private const float Force = 3;
         private Vector3 _startPosition;
+        //private Transform _cameraTransform;
 
         public bool IsDashing { get; private set; }
 
@@ -21,12 +22,13 @@ namespace Movement
         private void Start()
         {
             Instance = this;
-            _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+            _rigidbody.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionZ;
         }
 
         public override void OnStartLocalPlayer()
         {
             _rigidbody = gameObject.GetComponent<Rigidbody>();
+            //_cameraTransform = Camera.main!.transform;
         }
 
         private void Update()
@@ -45,6 +47,7 @@ namespace Movement
             while (IsDashing)
             {
                 _rigidbody.AddForce(_mesh.forward * Force, ForceMode.Impulse);
+                //_rigidbody.AddForce(_cameraTransform.forward * Force, ForceMode.Impulse);
                 var currentDistance = transform.position - _startPosition;
                 if (currentDistance.magnitude >= _distance)
                 {
