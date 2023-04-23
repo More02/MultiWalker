@@ -12,15 +12,12 @@ namespace Movement
         private readonly Color _dashedColor = new Color((float)0.6226415, (float)0.2196867, (float)0.2196867);
         private Color _baseColor = Color.white;
         [SerializeField] private float _distance = 5f;
-        //[SerializeField] private Transform _mesh;
 
         private const float Force = 3;
         private Vector3 _startPosition;
 
-        private static readonly int _red = Shader.PropertyToID("Red");
-
         private static readonly int _color = Shader.PropertyToID("_Color");
-        //private Transform _cameraTransform;
+        private Transform _cameraTransform;
 
         public bool IsDashing { get; private set; }
 
@@ -36,7 +33,7 @@ namespace Movement
         public override void OnStartLocalPlayer()
         {
             //_rigidbody = gameObject.GetComponent<Rigidbody>();
-            //_cameraTransform = Camera.main!.transform;
+            _cameraTransform = Camera.main!.transform;
         }
 
         private void Update()
@@ -53,6 +50,7 @@ namespace Movement
         {
             if (!isLocalPlayer) return;
             if (!collision.gameObject.CompareTag("Player")) return;
+            if (!IsDashing) return;
             var skinnedMeshRenderers = collision.transform.root.GetComponentsInChildren(typeof(SkinnedMeshRenderer), true);
 
             foreach (var component in skinnedMeshRenderers)
@@ -67,8 +65,8 @@ namespace Movement
             if (!IsDashing) yield break;
             while (IsDashing)
             {
-                _rigidbody.AddForce(transform.GetChild(0).forward * Force, ForceMode.Impulse);
-                //_rigidbody.AddForce(_cameraTransform.forward * Force, ForceMode.Impulse);
+                //_rigidbody.AddForce(transform.GetChild(0).forward * Force, ForceMode.Impulse);
+                _rigidbody.AddForce(_cameraTransform.forward * Force, ForceMode.Impulse);
                 var currentDistance = transform.position - _startPosition;
                 if (currentDistance.magnitude >= _distance)
                 {
