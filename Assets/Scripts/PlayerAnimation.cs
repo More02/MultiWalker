@@ -9,7 +9,7 @@ public class PlayerAnimation : NetworkBehaviour
     private static readonly int _toDash = Animator.StringToHash("ToDash");
     private static readonly int _toWalk = Animator.StringToHash("ToWalk");
     private static readonly int _toIdle = Animator.StringToHash("ToIdle");
-
+    
     private void Update()
     {
         if (!isLocalPlayer) return;
@@ -19,13 +19,13 @@ public class PlayerAnimation : NetworkBehaviour
             _animator.SetBool(_toWalk, true);
             _animator.SetBool(_toDash, false);
             _animator.SetBool(_toIdle, false);
-            if (Abilities.Instance.IsDashing)
+            if (DashAbility.Instance.IsDashing)
             {
                 _animator.SetBool(_toDash, true);
                 _animator.SetBool(_toWalk, false);
             }
         }
-        else if (Abilities.Instance.IsDashing)
+        else if (DashAbility.Instance.IsDashing)
         {
             _animator.SetBool(_toDash, true);
             _animator.SetBool(_toWalk, false);

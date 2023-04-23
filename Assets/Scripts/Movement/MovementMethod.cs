@@ -5,7 +5,7 @@ namespace Movement
 {
     public class MovementMethod : NetworkBehaviour
     {
-        [SerializeField] private Transform _mesh;
+        //[SerializeField] private Transform _mesh;
         private const float MoveSpeed = 10f;
 
         public override void OnStartLocalPlayer()
@@ -27,7 +27,7 @@ namespace Movement
             var movement = targetTransform.right * horizontal + targetTransform.forward * vertical;
             movement.y = 0f;
             if (movement.magnitude == 0) return;
-            _mesh.rotation = Quaternion.LookRotation(movement);
+            transform.GetChild(0).rotation = Quaternion.LookRotation(movement);
             targetTransform.position += movement * (MoveSpeed * Time.deltaTime);
         }
     }
