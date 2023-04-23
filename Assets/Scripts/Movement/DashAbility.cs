@@ -1,6 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using Mirror;
 using UnityEngine;
 
@@ -55,23 +54,29 @@ namespace Movement
             StartCoroutine(_dashCoroutine);
         }
 
-        private void OnCollisionEnter(Collision collision)
+        private async void OnCollisionEnter(Collision collision)
         {
             if (!isLocalPlayer) return;
-
+            _rigidbody.velocity = Vector3.zero;
             if (!collision.gameObject.CompareTag("Player")) return;
             _collisionRoot = collision.transform.root;
+            _collisionRoot.GetComponent<Rigidbody>().velocity = Vector3.zero;
             if (!IsDashing) return;
-            if (!_collisionRoot.GetComponent<DashAbility>()._isAvailableForDash) return;
-            _collisionRoot.GetComponent<DashAbility>()._isAvailableForDash = false;
+            var collisionDashAbility = _collisionRoot.GetComponent<DashAbility>();
+            if (!collisionDashAbility._isAvailableForDash) return;
+            collisionDashAbility._isAvailableForDash = false;
             _countOfSuccessDash++;
             Debug.Log(_countOfSuccessDash);
             StopCoroutine(_dashCoroutine);
             IsDashing = false;
-            _rigidbody.velocity = Vector3.zero;
+            // _rigidbody.velocity = Vector3.zero;
+            // _collisionRoot.GetComponent<Rigidbody>().velocity = Vector3.zero;
             _skinnedMeshRenderers = _collisionRoot.GetComponentsInChildren(typeof(SkinnedMeshRenderer), true);
             _collisionRoot.gameObject.GetComponent<MonoBehaviour>().StartCoroutine(ChangeColor());
-            //CmdChangeColor();
+            // CmdChangeColor(_dashedColor);
+            // await DelayTask();
+            // CmdChangeColor(_baseColor);
+            // collisionDashAbility._isAvailableForDash = true;
         }
 
         private IEnumerator Dash()
@@ -79,10 +84,7 @@ namespace Movement
             if (!IsDashing) yield break;
             while (IsDashing)
             {
-                _rigidbody.AddForce(transform.forward * Force, ForceMode.Impulse);
-                // _rigidbody.AddForce(transform.GetChild(0).right * Force, ForceMode.Impulse);
-                //_rigidbody.AddForce(_cameraTransform.forward * Force, ForceMode.Impulse);
-                // _rigidbody.AddForce(_cameraTransform.right * Force, ForceMode.Impulse);
+                _rigidbody.AddForce(transform.GetChild(0).forward * Force, ForceMode.Impulse);
                 var currentDistance = transform.position - _startPosition;
                 if (currentDistance.magnitude >= _distance)
                 {
@@ -129,35 +131,31 @@ namespace Movement
         }
 
 
-        // [Command(requiresAuthority = false)]
-        // private void CmdChangeColor()
-        // {
-        //     RpcChangeColor(_dashedColor);
-        //     ChangeColor(_dashedColor);
-        //     
-        //     StartCoroutine(CoroutineChangeColors());
-        //     
-        //     RpcChangeColor(_baseColor);
-        //     ChangeColor(_baseColor);
-        //     _collisionRoot.GetComponent<DashAbility>()._isAvailableForDash = true;
-        //     
-        // }
-        // [ClientRpc]
-        // private void RpcChangeColor(Color color)
-        // {
-        //     ChangeColor(color);
-        // }
-        // private void ChangeColor(Color color)
-        // {
-        //     foreach (var component in skinnedMeshRenderers)
-        //     {
-        //         var skinnedMeshRenderer = (SkinnedMeshRenderer)component;
-        //         skinnedMeshRenderer.materials[0].SetColor(_color, color);
-        //     }
-        // }
-        // private IEnumerator CoroutineChangeColors()
-        // {
-        //     yield return new WaitForSeconds(_disabledTime);
-        // }
+        [Command(requiresAuthority = false)]
+        private void CmdChangeColor(Color color)
+        {
+            RpcChangeColor(color);
+            ChangeColor(color);
+        }
+
+        [ClientRpc]
+        private void RpcChangeColor(Color color)
+        {
+            ChangeColor(color);
+        }
+
+        private void ChangeColor(Color color)
+        {
+            foreach (var component in _skinnedMeshRenderers)
+            {
+                var skinnedMeshRenderer = (SkinnedMeshRenderer)component;
+                skinnedMeshRenderer.materials[0].SetColor(_color, color);
+            }
+        }
+
+        private async Task DelayTask()
+        {
+            await Task.Delay((int)_disabledTime);
+        }
     }
 }
