@@ -9,13 +9,13 @@ namespace Movement
     {
         private Rigidbody _rigidbody;
         [SerializeField] private float _distance = 5f;
-        private Transform _cameraTransform;
+        [SerializeField] private Transform _mesh;
 
         private const float Force = 3;
         private Vector3 _startPosition;
-        
+
         public bool IsDashing { get; private set; }
-        
+
         public static Abilities Instance { get; private set; }
 
         private void Start()
@@ -26,7 +26,6 @@ namespace Movement
         public override void OnStartLocalPlayer()
         {
             _rigidbody = gameObject.GetComponent<Rigidbody>();
-            _cameraTransform = Camera.main!.transform;
             _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         }
 
@@ -45,7 +44,7 @@ namespace Movement
             if (!IsDashing) yield break;
             while (IsDashing)
             {
-                _rigidbody.AddForce(_cameraTransform.forward * Force, ForceMode.Impulse);
+                _rigidbody.AddForce(_mesh.forward * Force, ForceMode.Impulse);
                 var currentDistance = transform.position - _startPosition;
                 if (currentDistance.magnitude >= _distance)
                 {
@@ -57,6 +56,5 @@ namespace Movement
                 yield return null;
             }
         }
-        
     }
 }

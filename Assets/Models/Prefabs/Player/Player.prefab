@@ -1308,6 +1308,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0
   _distance: 5
+  _mesh: {fileID: 5556186312228617748}
 --- !u!114 &2540012373638592428
 MonoBehaviour:
   m_ObjectHideFlags: 0

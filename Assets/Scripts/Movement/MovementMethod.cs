@@ -29,7 +29,6 @@ namespace Movement
             if (movement.magnitude == 0) return;
             _mesh.rotation = Quaternion.LookRotation(movement);
             targetTransform.position += movement * (MoveSpeed * Time.deltaTime);
-            //_rigidbody.MovePosition(targetTransform.position + movement * (MoveSpeed * Time.fixedDeltaTime));
         }
     }
 }
