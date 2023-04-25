@@ -71,7 +71,7 @@ namespace Movement
 
             collisionDashAbility._isAvailableForDash = false;
             _countOfSuccessDash++;
-            PlayerInfo.SetScore(_countOfSuccessDash, NetworkConnection.LocalConnectionId);
+            InfoCanvas.Instance.SetScore(_countOfSuccessDash, NetworkConnection.LocalConnectionId);
             StopCoroutine(_dashCoroutine);
             IsDashing = false;
             await Task.Delay(_disabledTime * 1000);

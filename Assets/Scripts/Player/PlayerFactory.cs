@@ -2,26 +2,28 @@ using Mirror;
 using Spawn;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Player
 {
     public class PlayerFactory : NetworkManager
     {
         [SerializeField] private GameObject _playerInfoPrefab;
-        [SerializeField] private Transform _canvasPanel;
-        private GameObject prefabplayerInfoPanel;
         
+        //    private GameObject prefabPlayerInfoPanel;
+
         private string _playerName;
 
         public override void OnServerAddPlayer(NetworkConnectionToClient conn)
         {
             InstantiatePlayer(conn);
-            var playerInfoPanel = Instantiate(_playerInfoPrefab, _canvasPanel);
-            prefabplayerInfoPanel = playerInfoPanel;
-            NetworkServer.Spawn(playerInfoPanel);
-            PlayerInfo.FillPlayerInfo(playerInfoPanel, _playerName, _canvasPanel);
+            //var playerInfoObject = InfoCanvas.Instance.transform.root.GetComponent<InfoCanvas>();
+            //playerInfoObject.InstantiatePlayerInfoPanel(_playerName, _canvasPanelHolder);
+            // _canvasPanelHolder.transform.root.GetComponent<PlayerInfo>()
+            //     .RpcInstantiatePlayerInfoPanel(_playerName, _canvasPanelHolder);
+            //playerInfoObject.CmdInstantiatePlayerInfoPanel(_playerName);
         }
-        
+
         private void InstantiatePlayer(NetworkConnectionToClient conn)
         {
             var randomPlace = Random.Range(0, SpawnPointsHolder.Instanse.AllSpawnPoints.Count - 1);

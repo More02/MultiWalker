@@ -3577,8 +3577,7 @@ MonoBehaviour:
     dynamicAdjustmentTolerance: 1
     deliveryTimeEmaDuration: 2
   timeInterpolationGui: 0
-  _playerInfoPrefab: {fileID: 6858362623199690142, guid: 7d50516cb8cf4454a92c13e4cffe187d, type: 3}
-  _canvasPanel: {fileID: 1263622677}
+  _playerInfoPrefab: {fileID: 0}
 --- !u!4 &1058338305
 Transform:
   m_ObjectHideFlags: 0
@@ -4699,6 +4698,7 @@ GameObject:
   - component: {fileID: 1434099425}
   - component: {fileID: 1434099424}
   - component: {fileID: 1434099423}
+  - component: {fileID: 1434099427}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -4788,6 +4788,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1434099427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1434099422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 748108f17d3ba3f479c90c07ab107859, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerInfoPrefab: {fileID: 6858362623199690142, guid: 7d50516cb8cf4454a92c13e4cffe187d, type: 3}
+  _canvasPanelHolder: {fileID: 1263622677}
 --- !u!1001 &1470613124
 PrefabInstance:
   m_ObjectHideFlags: 0
