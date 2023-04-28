@@ -19,7 +19,6 @@ namespace Spawn
 
         public void Init()
         {
-            CmdSetPlayerName(gameObject.GetComponent<NetworkIdentity>(), gameObject.name);
             if (isLocalPlayer) SyncListOfPlayers();
             CmdInstantiatePlayerInfoPanel(NetworkClient.localPlayer.name);
         }
@@ -56,26 +55,7 @@ namespace Spawn
             InfoCanvas.FirstFillPlayerInfo(playerName, playerInfoPanel);
         }
 
-        [Command(requiresAuthority = false)]
-        private void CmdSetPlayerName(NetworkIdentity playerIdentity, string playerName)
-        {
-            RpcSetPlayerName(playerIdentity, playerName);
-        }
-
-        [ClientRpc]
-        private void RpcSetPlayerName(NetworkIdentity playerIdentity, string playerName)
-        {
-            if (!isServer) SetPlayerName(playerIdentity, playerName);
-        }
-
-
-        private static void SetPlayerName(NetworkIdentity playerIdentity, string playerName)
-        {
-            foreach (var playerId in NetworkClient.spawned.Values)
-            {
-                if (playerId == playerIdentity) playerId.gameObject.name = playerName;
-            }
-        }
+        
 
         private void Update()
         {

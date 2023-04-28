@@ -40,6 +40,7 @@ namespace Player
             //NetworkClient.localPlayer.gameObject.name = _playerName;
             NetworkServer.AddPlayerForConnection(conn, player.gameObject);
             SpawnPointsHolder.Instanse.AllSpawnPoints.RemoveAt(randomPlace);
+            player.GetComponent<PlayerName>().CmdChangeName(_playerName);
         }
 
         // public override void OnStartClient()

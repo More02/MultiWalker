@@ -4468,6 +4468,10 @@ PrefabInstance:
       propertyPath: _checker
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1006152179527841146, guid: a19e53a81c8030a40a6e831f01dac740, type: 3}
+      propertyPath: syncDirection
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2644241481693371511, guid: a19e53a81c8030a40a6e831f01dac740, type: 3}
       propertyPath: m_RootOrder
       value: 9
