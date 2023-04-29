@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Mirror;
 using Player;
 using UnityEngine;
@@ -9,7 +10,6 @@ namespace Spawn
 {
     public class CreateInfoPrefab : NetworkBehaviour
     {
-        // private List<NetworkIdentity> _connectedPlayers = new();
         public string PersonName { get; set; }
 
         public override void OnStartLocalPlayer()
@@ -17,18 +17,17 @@ namespace Spawn
             Init();
         }
 
-        public void Init()
+        private void Init()
         {
             if (isLocalPlayer) SyncListOfPlayers();
             CmdInstantiatePlayerInfoPanel(NetworkClient.localPlayer.name);
         }
 
-        private void SyncListOfPlayers()
+        private static void SyncListOfPlayers()
         {
-            foreach (var player in NetworkClient.spawned.Where(player => player.Value != NetworkClient.localPlayer))
+            foreach (var playerIdentity in NetworkClient.spawned.Values.Where(player => player != NetworkClient.localPlayer))
             {
-                InstantiatePlayerInfoPanel(player.Value.name);
-                //Debug.Log(player.Value.gameObject.name);
+                InstantiatePlayerInfoPanel(playerIdentity.name);
             }
         }
 
@@ -47,19 +46,9 @@ namespace Spawn
 
         private static void InstantiatePlayerInfoPanel(string playerName)
         {
-            var playerInfoPanel =
+            var playerInfoPrefab =
                 Instantiate(InfoCanvas.Instance.PlayerInfoPrefab, InfoCanvas.Instance.CanvasPanelHolder);
-            //NetworkServer.Spawn(playerInfoPanel);
-            //Debug.Log(NetworkServer.spawned.Count);
-            Debug.Log(NetworkClient.spawned.Count);
-            InfoCanvas.FirstFillPlayerInfo(playerName, playerInfoPanel);
-        }
-
-        
-
-        private void Update()
-        {
-            Debug.Log(gameObject.name);
+            InfoCanvas.FirstFillPlayerInfo(playerName, playerInfoPrefab);
         }
     }
 }

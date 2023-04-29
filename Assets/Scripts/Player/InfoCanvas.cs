@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Mirror;
 using TMPro;
 using UnityEngine;
@@ -17,16 +18,29 @@ namespace Player
         public GameObject PlayerInfoPrefab => _playerInfoPrefab;
         public Transform CanvasPanelHolder => _canvasPanelHolder;
 
+        public List<string> PlayerNames { get; } = new();
+
         private void Awake()
         {
             Instance = this;
         }
-        
-        public static void FirstFillPlayerInfo(string playerName, GameObject playerInfoPanel)
+
+        public async Task RenameAllPlayers()
         {
-            var itemFromInfoPanel = playerInfoPanel.transform;
-            itemFromInfoPanel.GetChild(0).GetComponent<TMP_Text>().text = playerName;
-            itemFromInfoPanel.GetChild(1).GetComponent<TMP_Text>().text = 0.ToString();
+            while (PlayerNames.Count != _canvasPanelHolder.childCount)
+            {
+                await Task.Yield();
+            }
+            for (var i = 0; i < PlayerNames.Count; i++)
+            {
+                _canvasPanelHolder.GetChild(i).GetChild(0).GetComponent<TMP_Text>().SetText(PlayerNames[i]);
+            }
+        }
+        public static void FirstFillPlayerInfo(string playerName, GameObject playerInfoPrefab)
+        {
+            var itemFromInfoPrefab = playerInfoPrefab.transform;
+            itemFromInfoPrefab.GetChild(0).GetComponent<TMP_Text>().text = playerName;
+            itemFromInfoPrefab.GetChild(1).GetComponent<TMP_Text>().text = 0.ToString();
         }
         
         public void SetScore(int score, int localConnectionId)

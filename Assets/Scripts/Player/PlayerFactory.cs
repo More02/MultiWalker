@@ -34,7 +34,7 @@ namespace Player
             var player = Instantiate(playerPrefab, SpawnPointsHolder.Instanse.AllSpawnPoints[randomPlace].position,
                 SpawnPointsHolder.Instanse.AllSpawnPoints[randomPlace].rotation);
             _player = player;
-            player.name = $"{playerPrefab.name} [connId={conn.connectionId}]";
+            player.name = $"{playerPrefab.name} {conn.connectionId}";
             _playerName = player.name;
             // player.GetComponent<CreateInfoPrefab>().CmdSetPlayerName(player.GetComponent<NetworkIdentity>(), _playerName);
             //NetworkClient.localPlayer.gameObject.name = _playerName;
@@ -42,12 +42,5 @@ namespace Player
             SpawnPointsHolder.Instanse.AllSpawnPoints.RemoveAt(randomPlace);
             player.GetComponent<PlayerName>().CmdChangeName(_playerName);
         }
-
-        // public override void OnStartClient()
-        // {
-        //     _player.name = $"{playerPrefab.name} [connId={_conn.connectionId}]";
-        //     _playerName = _player.name;
-        //     _player.GetComponent<CreateInfoPrefab>().CmdSetPlayerName(_player.GetComponent<NetworkIdentity>(), _playerName);
-        // }
     }
 }
