@@ -1,3 +1,4 @@
+using System;
 using Mirror;
 using UnityEngine;
 
@@ -10,6 +11,12 @@ namespace Movement
         private static readonly int _toDash = Animator.StringToHash("ToDash");
         private static readonly int _toWalk = Animator.StringToHash("ToWalk");
         private static readonly int _toIdle = Animator.StringToHash("ToIdle");
+        private DashAbility _dashAbility;
+
+        private void Start()
+        {
+            _dashAbility = gameObject.GetComponent<DashAbility>();
+        }
 
         private void Update()
         {
@@ -22,7 +29,6 @@ namespace Movement
             _animator.SetBool(_toWalk, false);
             _animator.SetBool(_toDash, false);
         }
-        
         private void SetAnimatorBools()
         {
             if (!isLocalPlayer) return;
@@ -31,11 +37,11 @@ namespace Movement
             {
                 ResetToFalseAllBools();
                 _animator.SetBool(_toWalk, true);
-                if (!DashAbility.Instance.IsDashing) return;
+                if (!_dashAbility.IsDashing) return;
                 ResetToFalseAllBools();
                 _animator.SetBool(_toDash, true);
             }
-            else if (DashAbility.Instance.IsDashing)
+            else if (_dashAbility.IsDashing)
             {
                 ResetToFalseAllBools();
                 _animator.SetBool(_toDash, true);
