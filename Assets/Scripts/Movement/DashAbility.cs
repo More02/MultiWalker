@@ -27,11 +27,9 @@ namespace Movement
         private IEnumerator _dashCoroutine;
 
         public bool IsDashing { get; private set; }
-        public static DashAbility Instance { get; private set; }
 
         private void Start()
         {
-            Instance = this;
             _skinnedMeshRenderers = GetComponentsInChildren(typeof(SkinnedMeshRenderer), true);
             _rigidbody = gameObject.GetComponent<Rigidbody>();
             _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;

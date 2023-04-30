@@ -23,9 +23,9 @@ namespace Spawn
             CmdInstantiatePlayerInfoPanel(NetworkClient.localPlayer.name);
         }
 
-        private static void SyncListOfPlayers()
+        private void SyncListOfPlayers()
         {
-            foreach (var playerIdentity in NetworkClient.spawned.Values.Where(player => player != NetworkClient.localPlayer))
+            foreach (var playerIdentity in NetworkClient.spawned.Values.Where(playerIdentity => playerIdentity != NetworkClient.localPlayer))
             {
                 InstantiatePlayerInfoPanel(playerIdentity.name);
             }
@@ -44,11 +44,12 @@ namespace Spawn
             if (!isServer) InstantiatePlayerInfoPanel(playerName);
         }
 
-        private static void InstantiatePlayerInfoPanel(string playerName)
+        private static async void InstantiatePlayerInfoPanel(string playerName)
         {
             var playerInfoPrefab =
                 Instantiate(InfoCanvas.Instance.PlayerInfoPrefab, InfoCanvas.Instance.CanvasPanelHolder);
             InfoCanvas.FirstFillPlayerInfo(playerName, playerInfoPrefab);
+            await InfoCanvas.Instance.RenameAllPlayers();
         }
     }
 }
