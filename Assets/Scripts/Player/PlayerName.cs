@@ -12,6 +12,7 @@ namespace Player
         {
             InfoCanvas.Instance.PlayerNames.Add(gameObject.name);
             InfoCanvas.Instance.PlayerScore.Add(GetComponent<DashAbility>().CountOfSuccessDash);
+            Name = gameObject.name;
         }
 
         private void OnNameUpdate(string oldName, string name)
@@ -27,13 +28,13 @@ namespace Player
             RpcChangeName(playerName);
             ChangeName(playerName);
         }
-
+        
         [ClientRpc]
-        private void RpcChangeName(string playerName)
+        public void RpcChangeName(string playerName)
         {
             if (!isServer) ChangeName(playerName);
         }
-
+        
         private async void ChangeName(string playerName)
         {
             gameObject.name = playerName;

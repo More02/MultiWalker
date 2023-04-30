@@ -21,9 +21,9 @@ namespace Player
             player.name = $"{playerPrefab.name} {conn.connectionId}";
             _playerName = player.name;
             NetworkServer.AddPlayerForConnection(conn, player.gameObject);
-            //NetworkServer.AddPlayerForConnection(conn, player.gameObject);
             SpawnPointsHolder.Instanse.AllSpawnPoints.RemoveAt(randomPlace);
-            player.GetComponent<PlayerName>().CmdChangeName(_playerName);
+            if (NetworkClient.active) player.GetComponent<PlayerName>().CmdChangeName(_playerName);
+            else player.GetComponent<PlayerName>().RpcChangeName(_playerName);
         }
     }
 }
