@@ -13,6 +13,18 @@ namespace Movement
 
         private void Update()
         {
+            SetAnimatorBools();
+        }
+
+        private void ResetToFalseAllBools()
+        {
+            _animator.SetBool(_toIdle, false);
+            _animator.SetBool(_toWalk, false);
+            _animator.SetBool(_toDash, false);
+        }
+        
+        private void SetAnimatorBools()
+        {
             if (!isLocalPlayer) return;
             if (_animator is null) return;
             if ((Input.GetAxis("Horizontal") != 0) || (Input.GetAxis("Vertical") != 0))
@@ -33,13 +45,6 @@ namespace Movement
                 ResetToFalseAllBools();
                 _animator.SetBool(_toIdle, true);
             }
-        }
-
-        private void ResetToFalseAllBools()
-        {
-            _animator.SetBool(_toIdle, false);
-            _animator.SetBool(_toWalk, false);
-            _animator.SetBool(_toDash, false);
         }
     }
 }
