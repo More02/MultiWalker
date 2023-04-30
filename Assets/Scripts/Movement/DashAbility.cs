@@ -13,14 +13,13 @@ namespace Movement
         [SerializeField] private int _disabledTime = 3;
         private const float Force = 3f;
         private Rigidbody _rigidbody;
-        private readonly Color _dashedColor = new Color((float)0.6226415, (float)0.2196867, (float)0.2196867);
+        private readonly Color _dashedColor = new((float)0.6226415, (float)0.2196867, (float)0.2196867);
         private readonly Color _baseColor = Color.white;
         private static readonly int _color = Shader.PropertyToID("_Color");
         private Component[] _skinnedMeshRenderers;
         private int _countOfSuccessDash;
         private bool _isAvailableForDash = true;
         private Vector3 _startPosition;
-        private Transform _cameraTransform;
         private Transform _collisionRoot;
         private bool _isDashed;
 
@@ -33,11 +32,6 @@ namespace Movement
             _skinnedMeshRenderers = GetComponentsInChildren(typeof(SkinnedMeshRenderer), true);
             _rigidbody = gameObject.GetComponent<Rigidbody>();
             _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
-        }
-
-        public override void OnStartLocalPlayer()
-        {
-            _cameraTransform = Camera.main!.transform;
         }
 
         private void Update()

@@ -1,17 +1,11 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Mirror;
 using Player;
-using UnityEngine;
 
 namespace Spawn
 {
     public class CreateInfoPrefab : NetworkBehaviour
     {
-        public string PersonName { get; set; }
-
         public override void OnStartLocalPlayer()
         {
             Init();
@@ -23,9 +17,10 @@ namespace Spawn
             CmdInstantiatePlayerInfoPanel(NetworkClient.localPlayer.name);
         }
 
-        private void SyncListOfPlayers()
+        private static void SyncListOfPlayers()
         {
-            foreach (var playerIdentity in NetworkClient.spawned.Values.Where(playerIdentity => playerIdentity != NetworkClient.localPlayer))
+            foreach (var playerIdentity in NetworkClient.spawned.Values.Where(playerIdentity =>
+                         playerIdentity != NetworkClient.localPlayer))
             {
                 InstantiatePlayerInfoPanel(playerIdentity.name);
             }

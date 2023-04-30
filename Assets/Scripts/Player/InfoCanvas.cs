@@ -1,14 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Mirror;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Player
 {
-    public class InfoCanvas: MonoBehaviour
+    public class InfoCanvas : MonoBehaviour
     {
         [SerializeField] private GameObject _playerInfoPrefab;
         [SerializeField] private Transform _canvasPanelHolder;
@@ -31,19 +28,19 @@ namespace Player
             {
                 await Task.Yield();
             }
-        
+
             for (var i = 0; i < PlayerNames.Count; i++)
             {
                 _canvasPanelHolder.GetChild(i).GetChild(0).GetComponent<TMP_Text>().SetText(PlayerNames[i]);
             }
         }
+
         public static void FirstFillPlayerInfo(string playerName, GameObject playerInfoPrefab)
         {
             var itemFromInfoPrefab = playerInfoPrefab.transform;
-            //itemFromInfoPrefab.GetChild(0).GetComponent<TMP_Text>().text = playerName;
             itemFromInfoPrefab.GetChild(1).GetComponent<TMP_Text>().text = 0.ToString();
         }
-        
+
         public void SetScore(int score, int localConnectionId)
         {
             _canvasPanelHolder.GetChild(localConnectionId).GetChild(1).GetComponent<TMP_Text>().text = score.ToString();

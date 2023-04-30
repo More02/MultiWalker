@@ -5,7 +5,6 @@ namespace Movement
 {
     public class MovementMethod : NetworkBehaviour
     {
-        //[SerializeField] private Transform _mesh;
         private const float MoveSpeed = 10f;
 
         public override void OnStartLocalPlayer()

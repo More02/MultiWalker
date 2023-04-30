@@ -47,9 +47,7 @@ namespace Movement
             var targetPosition = Target.position;
             transform.position = targetPosition + _offset;
             transform.LookAt(targetPosition);
-            //transform.rotation = Quaternion.Euler(_currentRotationY, _currentRotationX, 0f);
             transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(_currentRotationY, _currentRotationX, 0f), Smooth*Time.fixedDeltaTime);
-            // Target.rotation = Quaternion.Euler(0f, _currentRotationX, 0f);
             Target.rotation = Quaternion.Lerp(Target.rotation, Quaternion.Euler(0f, _currentRotationX, 0f), Smooth*Time.fixedDeltaTime);
         }
     }
