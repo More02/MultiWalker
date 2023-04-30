@@ -1,4 +1,5 @@
 using Mirror;
+using Movement;
 
 namespace Player
 {
@@ -10,7 +11,7 @@ namespace Player
         private void Start()
         {
             InfoCanvas.Instance.PlayerNames.Add(gameObject.name);
-            InfoCanvas.Instance.PlayerScore.Add(0);
+            InfoCanvas.Instance.PlayerScore.Add(GetComponent<DashAbility>().CountOfSuccessDash);
         }
 
         private void OnNameUpdate(string oldName, string name)
@@ -24,12 +25,13 @@ namespace Player
         public void CmdChangeName(string playerName)
         {
             RpcChangeName(playerName);
+            ChangeName(playerName);
         }
 
         [ClientRpc]
         private void RpcChangeName(string playerName)
         {
-            ChangeName(playerName);
+            if (!isServer) ChangeName(playerName);
         }
 
         private async void ChangeName(string playerName)

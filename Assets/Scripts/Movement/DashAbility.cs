@@ -85,7 +85,7 @@ namespace Movement
         [ClientRpc]
         private void RpcChangeIsDashed(DashAbility collisionDashAbility, bool isDashed)
         {
-            ChangeIsDashed(collisionDashAbility, isDashed);
+            if (!isServer) ChangeIsDashed(collisionDashAbility, isDashed);
         }
 
         private void ChangeIsDashed(DashAbility collisionDashAbility, bool isDashed)

@@ -1,6 +1,5 @@
 using System.Linq;
 using Mirror;
-using Movement;
 using Player;
 
 namespace Spawn
@@ -45,8 +44,8 @@ namespace Spawn
             var playerInfoPrefab =
                 Instantiate(InfoCanvas.Instance.PlayerInfoPrefab, InfoCanvas.Instance.CanvasPanelHolder);
             InfoCanvas.FirstFillPlayerInfo(playerName, playerInfoPrefab);
-            //gameObject.GetComponent<Stats>().CmdChangeScore(gameObject.GetComponent<DashAbility>().CountOfSuccessDash, gameObject.name);
             await InfoCanvas.Instance.RenameAllPlayers();
+            await InfoCanvas.Instance.RecountAllStats();
         }
     }
 }

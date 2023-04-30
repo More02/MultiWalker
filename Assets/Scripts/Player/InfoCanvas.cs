@@ -37,7 +37,18 @@ namespace Player
             }
         }
 
-        
+        public async Task RecountAllStats()
+        {
+            while (PlayerScore.Count != _canvasPanelHolder.childCount)
+            {
+                await Task.Yield();
+            }
+
+            for (var i = 0; i < PlayerScore.Count; i++)
+            {
+                _canvasPanelHolder.GetChild(i).GetChild(1).GetComponent<TMP_Text>().SetText(PlayerScore[i].ToString());
+            }
+        }
 
         public static void FirstFillPlayerInfo(string playerName, GameObject playerInfoPrefab)
         {

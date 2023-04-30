@@ -18,11 +18,12 @@ namespace Player
         [ClientRpc]
         private void RpcChangeScore(int score, string playerName)
         {
+            if (isServer) return;
             SetScore(score, playerName);
             ShowWin(score, playerName);
         }
 
-        private static void SetScore(int score, string playerName)
+        private static async void SetScore(int score, string playerName)
         {
             var infoCanvas = InfoCanvas.Instance;
             for (var i = 0; i < InfoCanvas.Instance.PlayerNames.Count; i++)
@@ -31,8 +32,11 @@ namespace Player
                 {
                     infoCanvas.CanvasPanelHolder.GetChild(i).GetChild(1).GetComponent<TMP_Text>().text =
                         score.ToString();
+                    InfoCanvas.Instance.PlayerScore[i] = score;
                 }
             }
+
+            await infoCanvas.RecountAllStats();
         }
 
         private static void ShowWin(int score, string playerName)
@@ -42,26 +46,5 @@ namespace Player
                 Debug.Log(playerName + " Win");
             }
         }
-
-        // [Command(requiresAuthority = false)]
-        // public void CmdSaveScore(List<int> playerScores)
-        // {
-        //     RpcSaveScore(playerScores);
-        //     SaveScore(playerScores);
-        // }
-        //
-        // [ClientRpc]
-        // private void RpcSaveScore(List<int> playerScores)
-        // {
-        //     SaveScore(playerScores);
-        // }
-
-        // private void SaveScore(List<int> playerScores)
-        // {
-        //     for (var i = 0; i < playerScores.Count; i++)
-        //     {
-        //         InfoCanvas.Instance.PlayerScore[i]
-        //     }
-        // }
     }
 }
