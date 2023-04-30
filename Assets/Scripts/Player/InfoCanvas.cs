@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
@@ -16,6 +17,7 @@ namespace Player
         public Transform CanvasPanelHolder => _canvasPanelHolder;
 
         public List<string> PlayerNames { get; } = new();
+        public List<int> PlayerScore { get; } = new();
 
         private void Awake()
         {
@@ -35,15 +37,13 @@ namespace Player
             }
         }
 
+        
+
         public static void FirstFillPlayerInfo(string playerName, GameObject playerInfoPrefab)
         {
             var itemFromInfoPrefab = playerInfoPrefab.transform;
             itemFromInfoPrefab.GetChild(1).GetComponent<TMP_Text>().text = 0.ToString();
         }
-
-        public void SetScore(int score, int localConnectionId)
-        {
-            _canvasPanelHolder.GetChild(localConnectionId).GetChild(1).GetComponent<TMP_Text>().text = score.ToString();
-        }
+        
     }
 }

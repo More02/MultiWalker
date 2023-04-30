@@ -17,7 +17,11 @@ namespace Movement
         private readonly Color _baseColor = Color.white;
         private static readonly int _color = Shader.PropertyToID("_Color");
         private Component[] _skinnedMeshRenderers;
+        
+        [SyncVar]
         private int _countOfSuccessDash;
+        public int CountOfSuccessDash => _countOfSuccessDash;
+
         private bool _isAvailableForDash = true;
         private Vector3 _startPosition;
         private Transform _collisionRoot;
@@ -63,11 +67,10 @@ namespace Movement
 
             collisionDashAbility._isAvailableForDash = false;
             _countOfSuccessDash++;
-            InfoCanvas.Instance.SetScore(_countOfSuccessDash, NetworkConnection.LocalConnectionId);
+            gameObject.GetComponent<Stats>().CmdChangeScore(_countOfSuccessDash, gameObject.name);
             StopCoroutine(_dashCoroutine);
             IsDashing = false;
             await Task.Delay(_disabledTime * 1000);
-            ShowWin();
             CmdChangeIsDashed(collisionDashAbility, !collisionDashAbility._isDashed);
             collisionDashAbility._isAvailableForDash = true;
         }
@@ -115,14 +118,6 @@ namespace Movement
                 }
 
                 yield return null;
-            }
-        }
-
-        private void ShowWin()
-        {
-            if (_countOfSuccessDash == 3)
-            {
-                Debug.Log("Win");
             }
         }
     }

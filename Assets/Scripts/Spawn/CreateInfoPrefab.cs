@@ -1,5 +1,6 @@
 using System.Linq;
 using Mirror;
+using Movement;
 using Player;
 
 namespace Spawn
@@ -17,7 +18,7 @@ namespace Spawn
             CmdInstantiatePlayerInfoPanel(NetworkClient.localPlayer.name);
         }
 
-        private static void SyncListOfPlayers()
+        private void SyncListOfPlayers()
         {
             foreach (var playerIdentity in NetworkClient.spawned.Values.Where(playerIdentity =>
                          playerIdentity != NetworkClient.localPlayer))
@@ -39,11 +40,12 @@ namespace Spawn
             if (!isServer) InstantiatePlayerInfoPanel(playerName);
         }
 
-        private static async void InstantiatePlayerInfoPanel(string playerName)
+        private async void InstantiatePlayerInfoPanel(string playerName)
         {
             var playerInfoPrefab =
                 Instantiate(InfoCanvas.Instance.PlayerInfoPrefab, InfoCanvas.Instance.CanvasPanelHolder);
             InfoCanvas.FirstFillPlayerInfo(playerName, playerInfoPrefab);
+            //gameObject.GetComponent<Stats>().CmdChangeScore(gameObject.GetComponent<DashAbility>().CountOfSuccessDash, gameObject.name);
             await InfoCanvas.Instance.RenameAllPlayers();
         }
     }

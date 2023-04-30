@@ -10,14 +10,14 @@ namespace Player
         private void Start()
         {
             InfoCanvas.Instance.PlayerNames.Add(gameObject.name);
+            InfoCanvas.Instance.PlayerScore.Add(0);
         }
 
-        private async void OnNameUpdate(string oldName, string name)
+        private void OnNameUpdate(string oldName, string name)
         {
             var playerNames = InfoCanvas.Instance.PlayerNames;
             if (playerNames.Contains(gameObject.name)) playerNames[playerNames.IndexOf(gameObject.name)] = Name;
             gameObject.name = Name;
-            await InfoCanvas.Instance.RenameAllPlayers();
         }
 
         [Command(requiresAuthority = false)]

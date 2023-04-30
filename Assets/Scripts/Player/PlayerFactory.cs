@@ -23,6 +23,7 @@ namespace Player
             NetworkServer.AddPlayerForConnection(conn, player.gameObject);
             SpawnPointsHolder.Instanse.AllSpawnPoints.RemoveAt(randomPlace);
             player.GetComponent<PlayerName>().CmdChangeName(_playerName);
+           // player.GetComponent<Stats>().CmdSaveScore(InfoCanvas.Instance.PlayerScore);
         }
     }
 }
