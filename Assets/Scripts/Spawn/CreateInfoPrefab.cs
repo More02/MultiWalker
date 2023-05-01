@@ -39,7 +39,7 @@ namespace Spawn
             if (!isServer) InstantiatePlayerInfoPanel(playerName);
         }
 
-        private async void InstantiatePlayerInfoPanel(string playerName)
+        private static async void InstantiatePlayerInfoPanel(string playerName)
         {
             var playerInfoPrefab =
                 Instantiate(InfoCanvas.Instance.PlayerInfoPrefab, InfoCanvas.Instance.CanvasPanelHolder);

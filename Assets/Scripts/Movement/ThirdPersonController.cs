@@ -20,7 +20,7 @@ namespace Movement
         private void Awake()
         {
             Instance = this;
-            Cursor.lockState = CursorLockMode.Confined; 
+            Cursor.lockState = CursorLockMode.Confined;
         }
 
         private void LateUpdate()
@@ -47,8 +47,10 @@ namespace Movement
             var targetPosition = Target.position;
             transform.position = targetPosition + _offset;
             transform.LookAt(targetPosition);
-            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.Euler(_currentRotationY, _currentRotationX, 0f), Smooth*Time.fixedDeltaTime);
-            Target.rotation = Quaternion.Lerp(Target.rotation, Quaternion.Euler(0f, _currentRotationX, 0f), Smooth*Time.fixedDeltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation,
+                Quaternion.Euler(_currentRotationY, _currentRotationX, 0f), Smooth * Time.fixedDeltaTime);
+            Target.rotation = Quaternion.Lerp(Target.rotation, Quaternion.Euler(0f, _currentRotationX, 0f),
+                Smooth * Time.fixedDeltaTime);
         }
     }
 }

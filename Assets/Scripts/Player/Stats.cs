@@ -11,7 +11,7 @@ namespace Player
         {
             RpcChangeScore(score, playerName);
             SetScore(score, playerName);
-            ShowWin(score, playerName);
+            EndGame.Instance.ShowWin(score, playerName);
         }
 
         [ClientRpc]
@@ -19,7 +19,7 @@ namespace Player
         {
             if (isServer) return;
             SetScore(score, playerName);
-            ShowWin(score, playerName);
+            EndGame.Instance.ShowWin(score, playerName);
         }
 
         private static async void SetScore(int score, string playerName)
@@ -27,23 +27,15 @@ namespace Player
             var infoCanvas = InfoCanvas.Instance;
             for (var i = 0; i < InfoCanvas.Instance.PlayerNames.Count; i++)
             {
-                if (playerName == infoCanvas.PlayerNames[i])
-                {
-                    infoCanvas.CanvasPanelHolder.GetChild(i).GetChild(1).GetComponent<TMP_Text>().text =
-                        score.ToString();
-                    InfoCanvas.Instance.PlayerScore[i] = score;
-                }
+                if (playerName != infoCanvas.PlayerNames[i]) continue;
+                infoCanvas.CanvasPanelHolder.GetChild(i).GetChild(1).GetComponent<TMP_Text>().text =
+                    score.ToString();
+                InfoCanvas.Instance.PlayerScore[i] = score;
             }
 
             await infoCanvas.RecountAllStats();
         }
 
-        private static void ShowWin(int score, string playerName)
-        {
-            if (score == 3)
-            {
-                Debug.Log(playerName + " Win");
-            }
-        }
+        
     }
 }

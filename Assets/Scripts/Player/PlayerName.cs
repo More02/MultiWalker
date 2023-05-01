@@ -21,25 +21,5 @@ namespace Player
             if (playerNames.Contains(gameObject.name)) playerNames[playerNames.IndexOf(gameObject.name)] = Name;
             gameObject.name = Name;
         }
-
-        [Command(requiresAuthority = false)]
-        public void CmdChangeName(string playerName)
-        {
-            RpcChangeName(playerName);
-            ChangeName(playerName);
-        }
-        
-        [ClientRpc]
-        public void RpcChangeName(string playerName)
-        {
-            if (!isServer) ChangeName(playerName);
-        }
-        
-        private async void ChangeName(string playerName)
-        {
-            gameObject.name = playerName;
-            Name = playerName;
-            await InfoCanvas.Instance.RenameAllPlayers();
-        }
     }
 }
