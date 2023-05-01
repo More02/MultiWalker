@@ -4119,6 +4119,7 @@ MonoBehaviour:
     dynamicAdjustmentTolerance: 1
     deliveryTimeEmaDuration: 2
   timeInterpolationGui: 0
+  sceneRestartDelay: 5
 --- !u!4 &1058338305
 Transform:
   m_ObjectHideFlags: 0
@@ -5290,6 +5291,7 @@ MonoBehaviour:
   _winnerName: {fileID: 484732809}
   _scoreValue: {fileID: 607123078}
   _winCanvas: {fileID: 1780707552}
+  _networkPlayerManager: {fileID: 1058338304}
 --- !u!1001 &1470613124
 PrefabInstance:
   m_ObjectHideFlags: 0
