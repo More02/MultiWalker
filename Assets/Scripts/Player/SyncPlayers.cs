@@ -16,6 +16,7 @@ namespace Player
         private void Init()
         {
             if (isLocalPlayer) SyncListOfPlayers();
+            gameObject.GetComponent<CreatePlayerInfoPrefab>().CmdInstantiatePlayerInfoPrefab(NetworkClient.localPlayer.name);
         }
 
         private void SyncListOfPlayers()

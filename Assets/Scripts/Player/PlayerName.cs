@@ -13,7 +13,6 @@ namespace Player
         private void Start()
         {
             var playerGameObject = gameObject;
-            playerGameObject.GetComponent<CreatePlayerInfoPrefab>().CmdInstantiatePlayerInfoPrefab(NetworkClient.localPlayer.name);
             FillPlayerInfo.Instance.PlayerNames.Add(playerGameObject.name);
             Name = playerGameObject.name;
         }
