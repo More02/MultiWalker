@@ -16,7 +16,7 @@ namespace Player
         private void Init()
         {
             if (isLocalPlayer) SyncListOfPlayers();
-            gameObject.GetComponent<CreatePlayerInfoPrefab>().CmdInstantiatePlayerInfoPrefab(NetworkClient.localPlayer.name);
+            gameObject.GetComponent<CreatePlayerInfoPrefab>().CmdInstantiatePlayerInfoPrefab();
         }
 
         private void SyncListOfPlayers()
@@ -24,7 +24,7 @@ namespace Player
             foreach (var playerIdentity in NetworkClient.spawned.Values.Where(playerIdentity =>
                          playerIdentity != NetworkClient.localPlayer))
             {
-                gameObject.GetComponent<CreatePlayerInfoPrefab>().InstantiatePlayerInfoPrefab(playerIdentity.name);
+                gameObject.GetComponent<CreatePlayerInfoPrefab>().InstantiatePlayerInfoPrefab();
             }
         }
     }

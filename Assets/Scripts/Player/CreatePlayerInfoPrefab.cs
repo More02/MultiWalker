@@ -8,22 +8,21 @@ namespace Player
     public class CreatePlayerInfoPrefab : NetworkBehaviour
     {
         [Command(requiresAuthority = false)]
-        public void CmdInstantiatePlayerInfoPrefab(string playerName)
+        public void CmdInstantiatePlayerInfoPrefab()
         {
-            RpcInstantiatePlayerInfoPrefab(playerName);
-            InstantiatePlayerInfoPrefab(playerName);
+            RpcInstantiatePlayerInfoPrefab();
+            InstantiatePlayerInfoPrefab();
         }
 
         [ClientRpc]
-        private void RpcInstantiatePlayerInfoPrefab(string playerName)
+        private void RpcInstantiatePlayerInfoPrefab()
         {
-            if (!isServer) InstantiatePlayerInfoPrefab(playerName);
+            if (!isServer) InstantiatePlayerInfoPrefab();
         }
 
-        public async void InstantiatePlayerInfoPrefab(string playerName)
+        public async void InstantiatePlayerInfoPrefab()
         {
-            var playerInfoPrefab =
-                Instantiate(FillPlayerInfo.Instance.PlayerInfoPrefab, FillPlayerInfo.Instance.CanvasPanelHolder);
+            Instantiate(FillPlayerInfo.Instance.PlayerInfoPrefab, FillPlayerInfo.Instance.CanvasPanelHolder);
             await FillPlayerInfo.Instance.RenameAllPlayers();
             await FillPlayerInfo.Instance.RecountAllStats();
         }

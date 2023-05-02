@@ -31,6 +31,7 @@ namespace Movement
             _animator.SetBool(_toWalk, false);
             _animator.SetBool(_toDash, false);
         }
+
         private void SetAnimatorBools()
         {
             if (!isLocalPlayer) return;

@@ -59,7 +59,8 @@ namespace Movement
             if (!IsDashing) return;
             var collisionDashAbility = collisionRoot.GetComponent<DashAbility>();
 
-            if ((!collisionDashAbility._isAvailableForDash)||(collisionDashAbility.CountOfSuccessDash>=WinGame.Instance.CountDashToWin)) return;
+            if ((!collisionDashAbility._isAvailableForDash) ||
+                (CountOfSuccessDash >= WinGame.Instance.CountDashToWin)) return;
 
             CmdChangeIsDashed(collisionDashAbility, !collisionDashAbility._isPlayerDashedBy);
             collisionDashAbility._isAvailableForDash = false;
@@ -103,11 +104,13 @@ namespace Movement
         private IEnumerator Dash()
         {
             if (!IsDashing) yield break;
+            var time = 0f;
             while (IsDashing)
             {
+                time += Time.deltaTime;
                 _rigidbody.AddForce(transform.GetChild(0).forward * Force, ForceMode.Impulse);
                 var currentDistance = transform.position - _startPosition;
-                if (currentDistance.magnitude >= _distance)
+                if ((currentDistance.magnitude >= _distance) || (time > 1f))
                 {
                     IsDashing = false;
                     _rigidbody.velocity = Vector3.zero;
