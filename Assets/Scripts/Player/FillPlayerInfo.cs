@@ -5,18 +5,20 @@ using UnityEngine;
 
 namespace Player
 {
-    public class InfoCanvas : MonoBehaviour
+    /// <summary>
+    /// Класс, отвечающий за изменение таблицы информации о пользователях
+    /// </summary>
+    public class FillPlayerInfo : MonoBehaviour
     {
         [SerializeField] private GameObject _playerInfoPrefab;
         [SerializeField] private Transform _canvasPanelHolder;
         private string _playerName;
 
-        public static InfoCanvas Instance { get; private set; }
+        public static FillPlayerInfo Instance { get; private set; }
+        public List<string> PlayerNames { get; } = new();
+        public List<int> PlayerScore { get; } = new();
         public GameObject PlayerInfoPrefab => _playerInfoPrefab;
         public Transform CanvasPanelHolder => _canvasPanelHolder;
-
-        public List<string> PlayerNames { get; } = new();
-        public List<int> PlayerScore { get; set; } = new();
 
         private void Awake()
         {
@@ -48,12 +50,5 @@ namespace Player
                 _canvasPanelHolder.GetChild(i).GetChild(1).GetComponent<TMP_Text>().SetText(PlayerScore[i].ToString());
             }
         }
-
-        public static void FirstFillPlayerInfo(string playerName, GameObject playerInfoPrefab)
-        {
-            var itemFromInfoPrefab = playerInfoPrefab.transform;
-            itemFromInfoPrefab.GetChild(1).GetComponent<TMP_Text>().text = 0.ToString();
-        }
-        
     }
 }

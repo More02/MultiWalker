@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Spawn
 {
+    /// <summary>
+    /// Класс, отвечающий за хранение точек спавна
+    /// </summary>
     public class SpawnPointsHolder : MonoBehaviour
     {
         public List<Transform> AllSpawnPoints { get; } = new();

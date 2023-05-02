@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Movement
 {
+    /// <summary>
+    /// Класс, отвечающий за анимацию игрока
+    /// </summary>
     public class PlayerAnimation : NetworkBehaviour
     {
         [SerializeField] private Animator _animator;

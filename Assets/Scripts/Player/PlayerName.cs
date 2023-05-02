@@ -1,8 +1,10 @@
 using Mirror;
-using Movement;
 
 namespace Player
 {
+    /// <summary>
+    /// Класс, отвечающий за изменение имени пользователей
+    /// </summary>
     public class PlayerName : NetworkBehaviour
     {
         [field: SyncVar(hook = nameof(OnNameUpdate))]
@@ -10,16 +12,19 @@ namespace Player
 
         private void Start()
         {
-            InfoCanvas.Instance.PlayerNames.Add(gameObject.name);
-            InfoCanvas.Instance.PlayerScore.Add(GetComponent<DashAbility>().CountOfSuccessDash);
-            Name = gameObject.name;
+            var playerGameObject = gameObject;
+            playerGameObject.GetComponent<CreatePlayerInfoPrefab>().CmdInstantiatePlayerInfoPrefab(NetworkClient.localPlayer.name);
+            FillPlayerInfo.Instance.PlayerNames.Add(playerGameObject.name);
+            Name = playerGameObject.name;
         }
 
-        private void OnNameUpdate(string oldName, string name)
+        private void OnNameUpdate(string oldName, string newName)
         {
-            var playerNames = InfoCanvas.Instance.PlayerNames;
+            var playerNames = FillPlayerInfo.Instance.PlayerNames;
             if (playerNames.Contains(gameObject.name)) playerNames[playerNames.IndexOf(gameObject.name)] = Name;
             gameObject.name = Name;
         }
+
+       
     }
 }

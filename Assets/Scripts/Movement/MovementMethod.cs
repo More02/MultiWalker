@@ -3,6 +3,9 @@ using UnityEngine;
 
 namespace Movement
 {
+    /// <summary>
+    /// Класс, отвечающий за перемещение игрока
+    /// </summary>
     public class MovementMethod : NetworkBehaviour
     {
         private const float MoveSpeed = 10f;

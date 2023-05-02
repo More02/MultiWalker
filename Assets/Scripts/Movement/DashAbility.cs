@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Threading.Tasks;
+using GameSession;
 using Mirror;
 using Player;
 using UnityEngine;
 
 namespace Movement
 {
+    /// <summary>
+    /// Класс, отвечающий за способность Рывок
+    /// </summary>
     [RequireComponent(typeof(Rigidbody))]
     public class DashAbility : NetworkBehaviour
     {
@@ -13,26 +17,16 @@ namespace Movement
         [SerializeField] private int _disabledTime = 3;
         private const float Force = 3f;
         private Rigidbody _rigidbody;
+        private Vector3 _startPosition;
         private readonly Color _dashedColor = new((float)0.6226415, (float)0.2196867, (float)0.2196867);
         private readonly Color _baseColor = Color.white;
         private static readonly int _color = Shader.PropertyToID("_Color");
         private Component[] _skinnedMeshRenderers;
-        
-        [SyncVar]
-        private int _countOfSuccessDash;
-        public int CountOfSuccessDash
-        {
-            get => _countOfSuccessDash;
-            set => _countOfSuccessDash = value;
-        }
-
         private bool _isAvailableForDash = true;
-        private Vector3 _startPosition;
-        private Transform _collisionRoot;
-        private bool _isDashed;
-
+        private bool _isPlayerDashedBy;
         private IEnumerator _dashCoroutine;
 
+        [field: SyncVar] public int CountOfSuccessDash { get; set; }
         public bool IsDashing { get; private set; }
 
         private void Start()
@@ -59,23 +53,22 @@ namespace Movement
             _rigidbody.velocity = Vector3.zero;
 
             if (!collision.gameObject.CompareTag("Player")) return;
-            _collisionRoot = collision.transform.root;
-            _collisionRoot.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            var collisionRoot = collision.transform.root;
+            collisionRoot.GetComponent<Rigidbody>().velocity = Vector3.zero;
 
             if (!IsDashing) return;
-            var collisionDashAbility = _collisionRoot.GetComponent<DashAbility>();
+            var collisionDashAbility = collisionRoot.GetComponent<DashAbility>();
 
-            if (!collisionDashAbility._isAvailableForDash) return;
+            if ((!collisionDashAbility._isAvailableForDash)||(collisionDashAbility.CountOfSuccessDash>=WinGame.Instance.CountDashToWin)) return;
 
-            CmdChangeIsDashed(collisionDashAbility, !collisionDashAbility._isDashed);
-
+            CmdChangeIsDashed(collisionDashAbility, !collisionDashAbility._isPlayerDashedBy);
             collisionDashAbility._isAvailableForDash = false;
-            _countOfSuccessDash++;
-            gameObject.GetComponent<Stats>().CmdChangeScore(_countOfSuccessDash, gameObject.name);
+            CountOfSuccessDash++;
+            gameObject.GetComponent<PlayerScore>().CmdChangeScore(CountOfSuccessDash, gameObject.name);
             StopCoroutine(_dashCoroutine);
             IsDashing = false;
             await Task.Delay(_disabledTime * 1000);
-            CmdChangeIsDashed(collisionDashAbility, !collisionDashAbility._isDashed);
+            CmdChangeIsDashed(collisionDashAbility, !collisionDashAbility._isPlayerDashedBy);
             collisionDashAbility._isAvailableForDash = true;
         }
 
@@ -94,8 +87,8 @@ namespace Movement
 
         private void ChangeIsDashed(DashAbility collisionDashAbility, bool isDashed)
         {
-            collisionDashAbility._isDashed = isDashed;
-            collisionDashAbility.ChangeColor(collisionDashAbility._isDashed ? _dashedColor : _baseColor);
+            collisionDashAbility._isPlayerDashedBy = isDashed;
+            collisionDashAbility.ChangeColor(collisionDashAbility._isPlayerDashedBy ? _dashedColor : _baseColor);
         }
 
         private void ChangeColor(Color color)
