@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Threading.Tasks;
-using GameSession;
 using Mirror;
 using Player;
 using UnityEngine;
@@ -28,6 +27,13 @@ namespace Movement
 
         [field: SyncVar] public int CountOfSuccessDash { get; set; }
         public bool IsDashing { get; private set; }
+        [field: SyncVar] public bool IsWin { get; set; }
+        public static DashAbility Instance { get; private set; }
+
+        private void Awake()
+        {
+            Instance = this;
+        }
 
         private void Start()
         {
@@ -58,9 +64,9 @@ namespace Movement
 
             if (!IsDashing) return;
             var collisionDashAbility = collisionRoot.GetComponent<DashAbility>();
-
+            
             if ((!collisionDashAbility._isAvailableForDash) ||
-                (CountOfSuccessDash >= WinGame.Instance.CountDashToWin)) return;
+                (IsWin)) return;
 
             CmdChangeIsDashed(collisionDashAbility, !collisionDashAbility._isPlayerDashedBy);
             collisionDashAbility._isAvailableForDash = false;

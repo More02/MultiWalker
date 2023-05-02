@@ -20,7 +20,7 @@ namespace Player
         {
             RpcChangeScore(score, playerName);
             SetScore(score, playerName);
-            WinGame.Instance.ShowWin(score, playerName);
+            WinGame.Instance.CheckWin(score, playerName);
         }
 
         [ClientRpc]
@@ -28,7 +28,7 @@ namespace Player
         {
             if (isServer) return;
             SetScore(score, playerName);
-            WinGame.Instance.ShowWin(score, playerName);
+            WinGame.Instance.CheckWin(score, playerName);
         }
 
         private static async void SetScore(int score, string playerName)

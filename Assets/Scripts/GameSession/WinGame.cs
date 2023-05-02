@@ -1,3 +1,5 @@
+using Mirror;
+using Movement;
 using TMPro;
 using UnityEngine;
 
@@ -16,7 +18,6 @@ namespace GameSession
         [SerializeField] private int _delayTime = 5;
 
         public int DelayTime => _delayTime;
-        public int CountDashToWin => _countDashToWin;
         public GameObject WinCanvas => _winCanvas;
         public static WinGame Instance { get; private set; }
 
@@ -24,10 +25,11 @@ namespace GameSession
         {
             Instance = this;
         }
-
-        public void ShowWin(int score, string playerName)
+        
+        public void CheckWin(int score, string playerName)
         {
             if (score != _countDashToWin) return;
+            DashAbility.Instance.IsWin = true;
             _winnerName.SetText(playerName);
             _scoreValue.SetText(score.ToString());
             _winCanvas.SetActive(true);

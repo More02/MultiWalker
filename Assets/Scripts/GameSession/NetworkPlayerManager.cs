@@ -60,6 +60,7 @@ namespace GameSession
                 player.gameObject.GetComponent<PlayerScore>().CmdChangeScore(0, player.gameObject.name);
                 player.gameObject.GetComponent<DashAbility>().CountOfSuccessDash = 0;
                 WinGame.Instance.WinCanvas.SetActive(false);
+                DashAbility.Instance.IsWin = false;
             }
         }
     }
