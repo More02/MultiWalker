@@ -15,14 +15,14 @@ namespace Player
         }
 
         [ClientRpc]
-        private void RpcChangeScore(int score, string playerName)
+        public void RpcChangeScore(int score, string playerName)
         {
             if (isServer) return;
             SetScore(score, playerName);
             EndGame.Instance.ShowWin(score, playerName);
         }
 
-        private static async void SetScore(int score, string playerName)
+        public async void SetScore(int score, string playerName)
         {
             var infoCanvas = InfoCanvas.Instance;
             for (var i = 0; i < InfoCanvas.Instance.PlayerNames.Count; i++)

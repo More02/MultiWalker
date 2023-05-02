@@ -12,9 +12,12 @@ namespace Player
         [SerializeField] private TMP_Text _scoreValue;
         [SerializeField] private GameObject _winCanvas;
         [SerializeField] private NetworkPlayerManager _networkPlayerManager;
+        [SerializeField] private int _countDashToWin = 3;
         public bool IsWin { get; set; }
-        private int _delayTime = 5;
+        [SerializeField] private int _delayTime = 5;
+        public int DelayTime => _delayTime; 
 
+        public GameObject WinCanvas => _winCanvas;
         public static EndGame Instance { get; private set; }
 
         private void Awake()
@@ -25,14 +28,12 @@ namespace Player
 
         public void ShowWin(int score, string playerName)
         {
-            if (score != 3) return;
+            if (score != _countDashToWin) return;
             _winnerName.SetText(playerName);
             _scoreValue.SetText(score.ToString());
             _winCanvas.SetActive(true);
             IsWin = true;
             _networkPlayerManager.EndOfGameSession();
-            // await Task.Delay(_delayTime*1000);
-            // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }

@@ -20,7 +20,11 @@ namespace Movement
         
         [SyncVar]
         private int _countOfSuccessDash;
-        public int CountOfSuccessDash => _countOfSuccessDash;
+        public int CountOfSuccessDash
+        {
+            get => _countOfSuccessDash;
+            set => _countOfSuccessDash = value;
+        }
 
         private bool _isAvailableForDash = true;
         private Vector3 _startPosition;

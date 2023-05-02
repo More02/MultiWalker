@@ -16,7 +16,7 @@ namespace Player
         public Transform CanvasPanelHolder => _canvasPanelHolder;
 
         public List<string> PlayerNames { get; } = new();
-        public List<int> PlayerScore { get; } = new();
+        public List<int> PlayerScore { get; set; } = new();
 
         private void Awake()
         {

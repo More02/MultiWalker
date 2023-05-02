@@ -9,17 +9,19 @@ namespace Spawn
 
         public static SpawnPointsHolder Instanse { get; private set; }
 
+        [SerializeField] private Transform _plawnPointsHolder;
+
         private void Awake()
         {
             Instanse = this;
             FillListOfPoints();
         }
 
-        private void FillListOfPoints()
+        public void FillListOfPoints()
         {
-            foreach (var point in transform.GetComponentsInChildren<Transform>())
+            foreach (var point in _plawnPointsHolder.GetComponentsInChildren<Transform>())
             {
-                if (point == transform) continue;
+                if (point == _plawnPointsHolder) continue;
                 AllSpawnPoints.Add(point);
             }
         }
