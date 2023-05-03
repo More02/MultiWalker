@@ -58,8 +58,13 @@ namespace GameSession
                 player.rotation = SpawnPointsHolder.Instanse.AllSpawnPoints[randomPlace].rotation;
                 SpawnPointsHolder.Instanse.AllSpawnPoints.RemoveAt(randomPlace);
                 player.gameObject.GetComponent<PlayerScore>().CmdChangeScore(0, player.gameObject.name);
-                player.gameObject.GetComponent<DashAbility>().CountOfSuccessDash = 0;
+                if (playerIdentity.isClient)
+                {
+                    SetActiveWinCanvas.Instance.CmdSetActiveWinPrefab(false);
+                }
+
                 WinGame.Instance.WinCanvas.SetActive(false);
+                player.gameObject.GetComponent<DashAbility>().CountOfSuccessDash = 0;
                 DashAbility.Instance.IsWin = false;
             }
         }
