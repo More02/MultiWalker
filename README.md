@@ -21,9 +21,9 @@
 
 # Tech
 * C#
-* 3D modeling
 * Unity 3D
 * Mirror Networking
+* 3D modeling
 
 ---
 
