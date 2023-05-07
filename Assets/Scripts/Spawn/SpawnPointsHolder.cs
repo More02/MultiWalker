@@ -10,21 +10,21 @@ namespace Spawn
     {
         public List<Transform> AllSpawnPoints { get; } = new();
 
-        public static SpawnPointsHolder Instanse { get; private set; }
+        public static SpawnPointsHolder Instance { get; private set; }
 
-        [SerializeField] private Transform _plawnPointsHolder;
+        [SerializeField] private Transform _spawnPointsHolder;
 
         private void Awake()
         {
-            Instanse = this;
+            Instance = this;
             FillListOfPoints();
         }
 
         public void FillListOfPoints()
         {
-            foreach (var point in _plawnPointsHolder.GetComponentsInChildren<Transform>())
+            foreach (var point in _spawnPointsHolder.GetComponentsInChildren<Transform>())
             {
-                if (point == _plawnPointsHolder) continue;
+                if (point == _spawnPointsHolder) continue;
                 AllSpawnPoints.Add(point);
             }
         }

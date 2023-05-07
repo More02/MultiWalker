@@ -20,12 +20,12 @@ namespace GameSession
 
         private void InstantiatePlayer(NetworkConnectionToClient conn)
         {
-            var randomPlace = Random.Range(0, SpawnPointsHolder.Instanse.AllSpawnPoints.Count - 1);
-            var player = Instantiate(playerPrefab, SpawnPointsHolder.Instanse.AllSpawnPoints[randomPlace].position,
-                SpawnPointsHolder.Instanse.AllSpawnPoints[randomPlace].rotation);
+            var randomPlace = Random.Range(0, SpawnPointsHolder.Instance.AllSpawnPoints.Count - 1);
+            var player = Instantiate(playerPrefab, SpawnPointsHolder.Instance.AllSpawnPoints[randomPlace].position,
+                SpawnPointsHolder.Instance.AllSpawnPoints[randomPlace].rotation);
             player.name = $"{playerPrefab.name} {conn.connectionId + 1}";
             NetworkServer.AddPlayerForConnection(conn, player.gameObject);
-            SpawnPointsHolder.Instanse.AllSpawnPoints.RemoveAt(randomPlace);
+            SpawnPointsHolder.Instance.AllSpawnPoints.RemoveAt(randomPlace);
         }
 
         public void EndOfGameSession()
@@ -43,7 +43,7 @@ namespace GameSession
                 yield break;
             }
 
-            SpawnPointsHolder.Instanse.FillListOfPoints();
+            SpawnPointsHolder.Instance.FillListOfPoints();
 
             for (var i = 0; i < FillPlayerInfo.Instance.PlayerScore.Count; i++)
             {
@@ -52,11 +52,11 @@ namespace GameSession
 
             foreach (var playerIdentity in NetworkClient.spawned.Values)
             {
-                var randomPlace = Random.Range(0, SpawnPointsHolder.Instanse.AllSpawnPoints.Count - 1);
+                var randomPlace = Random.Range(0, SpawnPointsHolder.Instance.AllSpawnPoints.Count - 1);
                 var player = playerIdentity.transform;
-                player.position = SpawnPointsHolder.Instanse.AllSpawnPoints[randomPlace].position;
-                player.rotation = SpawnPointsHolder.Instanse.AllSpawnPoints[randomPlace].rotation;
-                SpawnPointsHolder.Instanse.AllSpawnPoints.RemoveAt(randomPlace);
+                player.position = SpawnPointsHolder.Instance.AllSpawnPoints[randomPlace].position;
+                player.rotation = SpawnPointsHolder.Instance.AllSpawnPoints[randomPlace].rotation;
+                SpawnPointsHolder.Instance.AllSpawnPoints.RemoveAt(randomPlace);
                 player.gameObject.GetComponent<PlayerScore>().CmdChangeScore(0, player.gameObject.name);
                 if (playerIdentity.isClient)
                 {

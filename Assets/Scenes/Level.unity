@@ -4930,7 +4930,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 057e7bee18a05974fadb2326fc0d4887, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _plawnPointsHolder: {fileID: 1237240234}
+  _spawnPointsHolder: {fileID: 1237240234}
 --- !u!1 &1263622676
 GameObject:
   m_ObjectHideFlags: 0
