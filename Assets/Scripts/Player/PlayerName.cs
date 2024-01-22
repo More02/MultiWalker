@@ -1,4 +1,5 @@
-using Mirror;
+using FishNet.Object;
+using FishNet.Object.Synchronizing;
 
 namespace Player
 {
@@ -7,7 +8,7 @@ namespace Player
     /// </summary>
     public class PlayerName : NetworkBehaviour
     {
-        [field: SyncVar(hook = nameof(OnNameUpdate))]
+        [field: SyncVar(OnChange = nameof(OnNameUpdate))]
         private string Name { get; set; }
 
         private void Start()

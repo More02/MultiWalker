@@ -1,4 +1,7 @@
-using Mirror;
+using System;
+using FishNet;
+using FishNet.Object;
+using FishNet.Transporting;
 using UnityEngine;
 
 namespace Movement
@@ -10,14 +13,24 @@ namespace Movement
     {
         private const float MoveSpeed = 10f;
 
-        public override void OnStartLocalPlayer()
+        private void OnEnable()
+        {
+            InstanceFinder.ClientManager.OnClientConnectionState += SetTarget;
+        }
+
+        public void SetTarget(ClientConnectionStateArgs сlientConnectionStateArgs)
         {
             ThirdPersonController.Instance.Target = transform;
         }
 
+        // public override void OnStartLocalPlayer()
+        // {
+        //     ThirdPersonController.Instance.Target = transform;
+        // }
+
         private void FixedUpdate()
         {
-            if (!isLocalPlayer) return;
+            if (!IsOwner) return;
             Move();
         }
 

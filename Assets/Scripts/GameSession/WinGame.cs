@@ -1,4 +1,3 @@
-using Mirror;
 using Movement;
 using TMPro;
 using UnityEngine;

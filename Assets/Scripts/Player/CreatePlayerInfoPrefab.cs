@@ -1,4 +1,4 @@
-﻿using Mirror;
+﻿using FishNet.Object;
 
 namespace Player
 {
@@ -7,17 +7,17 @@ namespace Player
     /// </summary>
     public class CreatePlayerInfoPrefab : NetworkBehaviour
     {
-        [Command(requiresAuthority = false)]
+        [ServerRpc]
         public void CmdInstantiatePlayerInfoPrefab()
         {
             RpcInstantiatePlayerInfoPrefab();
             InstantiatePlayerInfoPrefab();
         }
 
-        [ClientRpc]
+        [ObserversRpc]
         private void RpcInstantiatePlayerInfoPrefab()
         {
-            if (!isServer) InstantiatePlayerInfoPrefab();
+            if (!IsServerInitialized) InstantiatePlayerInfoPrefab();
         }
 
         public async void InstantiatePlayerInfoPrefab()

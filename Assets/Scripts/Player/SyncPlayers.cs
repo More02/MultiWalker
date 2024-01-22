@@ -1,5 +1,7 @@
 using System.Linq;
-using Mirror;
+using FishNet;
+using FishNet.Object;
+using FishNet.Transporting;
 
 namespace Player
 {
@@ -8,21 +10,26 @@ namespace Player
     /// </summary>
     public class SyncPlayers : NetworkBehaviour
     {
-        public override void OnStartLocalPlayer()
+        private void OnEnable()
         {
-            Init();
+            InstanceFinder.ClientManager.OnClientConnectionState += Init;
         }
 
-        private void Init()
+        // public override void OnStartLocalPlayer()
+        // {
+        //     Init();
+        // }
+
+        private void Init(ClientConnectionStateArgs сlientConnectionStateArgs)
         {
-            if (isLocalPlayer) SyncListOfPlayers();
+            if (IsOwner) SyncListOfPlayers();
             gameObject.GetComponent<CreatePlayerInfoPrefab>().CmdInstantiatePlayerInfoPrefab();
         }
 
         private void SyncListOfPlayers()
         {
-            foreach (var playerIdentity in NetworkClient.spawned.Values.Where(playerIdentity =>
-                         playerIdentity != NetworkClient.localPlayer))
+            foreach (var playerIdentity in InstanceFinder.ClientManager.Connection.Objects.Where(playerIdentity =>
+                         playerIdentity != IsOwner))
             {
                 gameObject.GetComponent<CreatePlayerInfoPrefab>().InstantiatePlayerInfoPrefab();
             }

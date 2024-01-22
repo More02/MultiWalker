@@ -1,4 +1,4 @@
-using Mirror;
+using FishNet.Object;
 using UnityEngine;
 
 namespace Movement
@@ -34,7 +34,7 @@ namespace Movement
 
         private void SetAnimatorBools()
         {
-            if (!isLocalPlayer) return;
+            if (!IsOwner) return;
             if (_animator is null) return;
             if ((Input.GetAxis("Horizontal") != 0) || (Input.GetAxis("Vertical") != 0))
             {
