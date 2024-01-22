@@ -1,4 +1,4 @@
-﻿using Mirror;
+﻿using FishNet.Object;
 
 namespace GameSession
 {
@@ -14,17 +14,17 @@ namespace GameSession
             Instance = this;
         }
 
-        [Command(requiresAuthority = false)]
+        [ServerRpc]
         public void CmdSetActiveWinPrefab(bool isActive)
         {
             RpcSetActiveWinPrefab(isActive);
             SetActiveWinPrefab(isActive);
         }
 
-        [ClientRpc]
+        [ObserversRpc]
         private void RpcSetActiveWinPrefab(bool isActive)
         {
-            if (!isServer) SetActiveWinPrefab(isActive);
+            if (!IsServerInitialized) SetActiveWinPrefab(isActive);
         }
 
         private static void SetActiveWinPrefab(bool isActive)

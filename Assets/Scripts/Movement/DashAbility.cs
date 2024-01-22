@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Threading.Tasks;
-using Mirror;
+using FishNet.Object;
+using FishNet.Object.Synchronizing;
 using Player;
 using UnityEngine;
 
@@ -44,7 +45,7 @@ namespace Movement
 
         private void Update()
         {
-            if (!isLocalPlayer) return;
+            if (!IsOwner) return;
             if (!Input.GetMouseButtonDown(0)) return;
             if (IsDashing) return;
             IsDashing = true;
@@ -55,7 +56,7 @@ namespace Movement
 
         private async void OnCollisionEnter(Collision collision)
         {
-            if (!isLocalPlayer) return;
+            if (!IsOwner) return;
             _rigidbody.velocity = Vector3.zero;
 
             if (!collision.gameObject.CompareTag("Player")) return;
@@ -79,17 +80,17 @@ namespace Movement
             collisionDashAbility._isAvailableForDash = true;
         }
 
-        [Command(requiresAuthority = false)]
+        [ServerRpc]
         private void CmdChangeIsDashed(DashAbility collisionDashAbility, bool isDashed)
         {
             RpcChangeIsDashed(collisionDashAbility, isDashed);
             ChangeIsDashed(collisionDashAbility, isDashed);
         }
 
-        [ClientRpc]
+        [ObserversRpc]
         private void RpcChangeIsDashed(DashAbility collisionDashAbility, bool isDashed)
         {
-            if (!isServer) ChangeIsDashed(collisionDashAbility, isDashed);
+            if (!IsServerInitialized) ChangeIsDashed(collisionDashAbility, isDashed);
         }
 
         private void ChangeIsDashed(DashAbility collisionDashAbility, bool isDashed)

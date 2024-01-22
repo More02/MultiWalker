@@ -1,5 +1,10 @@
+using System;
 using System.Collections;
-using Mirror;
+using FishNet;
+using FishNet.Component.Spawning;
+using FishNet.Connection;
+using FishNet.Managing;
+using FishNet.Transporting;
 using Movement;
 using Player;
 using Spawn;
@@ -11,22 +16,27 @@ namespace GameSession
     /// <summary>
     /// Класс NetworkManager, отвечающий за начало и конец игровой сессии
     /// </summary>
-    public class NetworkPlayerManager : NetworkManager
+    public class NetworkPlayerManager : MonoBehaviour
     {
-        public override void OnServerAddPlayer(NetworkConnectionToClient conn)
+        private void OnEnable()
         {
-            InstantiatePlayer(conn);
+           // InstanceFinder.ServerManager.OnRemoteConnectionState += InstantiatePlayer;
         }
 
-        private void InstantiatePlayer(NetworkConnectionToClient conn)
-        {
-            var randomPlace = Random.Range(0, SpawnPointsHolder.Instance.AllSpawnPoints.Count - 1);
-            var player = Instantiate(playerPrefab, SpawnPointsHolder.Instance.AllSpawnPoints[randomPlace].position,
-                SpawnPointsHolder.Instance.AllSpawnPoints[randomPlace].rotation);
-            player.name = $"{playerPrefab.name} {conn.connectionId + 1}";
-            NetworkServer.AddPlayerForConnection(conn, player.gameObject);
-            SpawnPointsHolder.Instance.AllSpawnPoints.RemoveAt(randomPlace);
-        }
+        // public override void OnServerAddPlayer(NetworkConnectionToClient conn)
+        // {
+        //     InstantiatePlayer(conn);
+        // }
+
+        // private void InstantiatePlayer(NetworkConnection conn, RemoteConnectionStateArgs _emoteConnectionStateArgs)
+        // {
+        //     var randomPlace = Random.Range(0, SpawnPointsHolder.Instance.AllSpawnPoints.Count - 1);
+        //     var player = Instantiate(PlayerSpawner.playerPrefab, SpawnPointsHolder.Instance.AllSpawnPoints[randomPlace].position,
+        //         SpawnPointsHolder.Instance.AllSpawnPoints[randomPlace].rotation);
+        //     player.name = $"{playerPrefab.name} {conn.connectionId + 1}";
+        //     InstanceFinder.ServerManager.AddPlayerForConnection(conn, player.gameObject);
+        //     SpawnPointsHolder.Instance.AllSpawnPoints.RemoveAt(randomPlace);
+        // }
 
         public void EndOfGameSession()
         {
@@ -49,8 +59,8 @@ namespace GameSession
             {
                 FillPlayerInfo.Instance.PlayerScore[i] = 0;
             }
-
-            foreach (var playerIdentity in NetworkClient.spawned.Values)
+            
+            foreach (var playerIdentity in InstanceFinder.ClientManager.Connection.Objects)
             {
                 var randomPlace = Random.Range(0, SpawnPointsHolder.Instance.AllSpawnPoints.Count - 1);
                 var player = playerIdentity.transform;
@@ -58,7 +68,7 @@ namespace GameSession
                 player.rotation = SpawnPointsHolder.Instance.AllSpawnPoints[randomPlace].rotation;
                 SpawnPointsHolder.Instance.AllSpawnPoints.RemoveAt(randomPlace);
                 player.gameObject.GetComponent<PlayerScore>().CmdChangeScore(0, player.gameObject.name);
-                if (playerIdentity.isClient)
+                if (playerIdentity.IsClientInitialized)
                 {
                     SetActiveWinCanvas.Instance.CmdSetActiveWinPrefab(false);
                 }

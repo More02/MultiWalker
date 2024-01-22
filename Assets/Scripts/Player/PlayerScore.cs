@@ -1,5 +1,5 @@
-﻿using GameSession;
-using Mirror;
+﻿using FishNet.Object;
+using GameSession;
 using Movement;
 using TMPro;
 
@@ -15,7 +15,7 @@ namespace Player
             FillPlayerInfo.Instance.PlayerScore.Add(GetComponent<DashAbility>().CountOfSuccessDash);
         }
 
-        [Command(requiresAuthority = false)]
+        [ServerRpc]
         public void CmdChangeScore(int score, string playerName)
         {
             RpcChangeScore(score, playerName);
@@ -23,10 +23,10 @@ namespace Player
             WinGame.Instance.CheckWin(score, playerName);
         }
 
-        [ClientRpc]
+        [ObserversRpc]
         private void RpcChangeScore(int score, string playerName)
         {
-            if (isServer) return;
+            if (IsServerInitialized) return;
             SetScore(score, playerName);
             WinGame.Instance.CheckWin(score, playerName);
         }
