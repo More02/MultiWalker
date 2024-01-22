@@ -18,13 +18,11 @@ namespace Player
             Name = playerGameObject.name;
         }
 
-        private void OnNameUpdate(string oldName, string newName)
+        private void OnNameUpdate(string oldName, string newName, bool asServer)
         {
             var playerNames = FillPlayerInfo.Instance.PlayerNames;
             if (playerNames.Contains(gameObject.name)) playerNames[playerNames.IndexOf(gameObject.name)] = Name;
             gameObject.name = Name;
         }
-
-       
     }
 }
