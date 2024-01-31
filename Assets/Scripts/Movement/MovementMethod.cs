@@ -13,10 +13,10 @@ namespace Movement
     {
         private const float MoveSpeed = 10f;
 
-        private void OnEnable()
+        private void Start()
         {
            // InstanceFinder.ClientManager.OnClientConnectionState += SetTarget;
-            SetTarget();
+            if (Owner.IsLocalClient) SetTarget();
         }
         
         public void SetTarget()
@@ -39,6 +39,7 @@ namespace Movement
         private void FixedUpdate()
         {
             if (!IsOwner) return;
+           // Debug.Log("IsOwner from MovementMethod = "+IsOwner + " game object name = " + gameObject.name);
             Move();
         }
 
@@ -52,6 +53,14 @@ namespace Movement
             if (movement.magnitude == 0) return;
             transform.GetChild(0).rotation = Quaternion.LookRotation(movement);
             targetTransform.position += movement * (MoveSpeed * Time.deltaTime);
+        }
+
+        private void OnGUI()
+        {
+            GUILayout.BeginArea(new Rect(200, 10, Screen.width, Screen.height));
+            GUILayout.Label($"Target = {ThirdPersonController.Instance.Target}");
+            GUILayout.Label($"GameObject Name = {gameObject.name}");
+            GUILayout.EndArea();
         }
     }
 }

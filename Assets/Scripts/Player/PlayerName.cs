@@ -11,10 +11,19 @@ namespace Player
         [field: SyncVar(OnChange = nameof(OnNameUpdate))]
         private string Name { get; set; }
 
-        private void Start()
+        // private void Start()
+        // {
+        //     var playerGameObject = gameObject;
+        //     FillPlayerInfo.Instance.PlayerNames.Add(playerGameObject.name);
+        //     //FillPlayerInfo.Instance.PlayerNames.Add("Player "+FillPlayerInfo.Instance.CanvasPanelHolder.childCount);
+        //     Name = playerGameObject.name;
+        // }
+        //
+        public void Init()
         {
             var playerGameObject = gameObject;
             FillPlayerInfo.Instance.PlayerNames.Add(playerGameObject.name);
+            //FillPlayerInfo.Instance.PlayerNames.Add("Player "+FillPlayerInfo.Instance.CanvasPanelHolder.childCount);
             Name = playerGameObject.name;
         }
 

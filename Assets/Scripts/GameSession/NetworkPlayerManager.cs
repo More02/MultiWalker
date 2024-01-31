@@ -21,7 +21,8 @@ namespace GameSession
     {
         private void OnEnable()
         {
-           // InstanceFinder.ServerManager.OnRemoteConnectionState += InstantiatePlayer;
+            //InstanceFinder.ServerManager.OnRemoteConnectionState += InstantiatePlayer;
+            // InstanceFinder.ServerManager.OnRemoteConnectionState += InstantiatePlayer;
         }
 
         // public override void OnServerAddPlayer(NetworkConnectionToClient conn)
