@@ -14,14 +14,14 @@ namespace GameSession
             Instance = this;
         }
 
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         public void CmdSetActiveWinPrefab(bool isActive)
         {
             RpcSetActiveWinPrefab(isActive);
             SetActiveWinPrefab(isActive);
         }
 
-        [ObserversRpc]
+        [ObserversRpc(ExcludeServer = true)]
         private void RpcSetActiveWinPrefab(bool isActive)
         {
             if (!IsServerInitialized) SetActiveWinPrefab(isActive);

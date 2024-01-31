@@ -2147,7 +2147,7 @@ namespace FishNet.Component.Transforming
         /// <summary>
         /// Updates clients with transform data.
         /// </summary>
-        [ObserversRpc]
+        [ObserversRpc(ExcludeServer = true)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void ObserversUpdateClientAuthoritativeTransform(ArraySegment<byte> data, Channel channel)
         {
@@ -2173,7 +2173,7 @@ namespace FishNet.Component.Transforming
         /// <param name="tb"></param>
         /// <param name="channel"></param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         private void ServerUpdateTransform(ArraySegment<byte> data, Channel channel)
         {
             if (!_clientAuthoritative)
@@ -2403,7 +2403,7 @@ namespace FishNet.Component.Transforming
         /// <summary>
         /// Sets synchronized values based on value.
         /// </summary>
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         private void ServerSetSynchronizedProperties(SynchronizedProperty value)
         {
             if (!_clientAuthoritative)

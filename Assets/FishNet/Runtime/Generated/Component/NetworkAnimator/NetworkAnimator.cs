@@ -1460,7 +1460,7 @@ namespace FishNet.Component.Animating
         /// Called on server to receive an animator update.
         /// </summary>
         /// <param name="data"></param>
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         private void ServerAnimatorUpdated(ArraySegment<byte> data)
         {
             if (!_isAnimatorEnabled)

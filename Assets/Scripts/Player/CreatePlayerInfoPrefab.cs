@@ -1,4 +1,5 @@
 ﻿using FishNet.Object;
+using UnityEngine;
 
 namespace Player
 {
@@ -7,14 +8,15 @@ namespace Player
     /// </summary>
     public class CreatePlayerInfoPrefab : NetworkBehaviour
     {
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         public void CmdInstantiatePlayerInfoPrefab()
         {
+            Debug.Log("CmdInstantiatePlayerInfoPrefab");
             RpcInstantiatePlayerInfoPrefab();
             InstantiatePlayerInfoPrefab();
         }
 
-        [ObserversRpc]
+        [ObserversRpc(ExcludeServer = true)]
         private void RpcInstantiatePlayerInfoPrefab()
         {
             if (!IsServerInitialized) InstantiatePlayerInfoPrefab();
@@ -22,6 +24,7 @@ namespace Player
 
         public async void InstantiatePlayerInfoPrefab()
         {
+            Debug.Log("InstantiatePlayerInfoPrefab");
             Instantiate(FillPlayerInfo.Instance.PlayerInfoPrefab, FillPlayerInfo.Instance.CanvasPanelHolder);
             await FillPlayerInfo.Instance.RenameAllPlayers();
             await FillPlayerInfo.Instance.RecountAllStats();

@@ -44,7 +44,7 @@ namespace FishNet.Example.Scened
                 ServerMove(hor, ver);
         }
 
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         private void ServerMove(float hor, float ver)
         {
             Move(hor, ver);
