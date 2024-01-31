@@ -15,7 +15,7 @@ namespace Player
             FillPlayerInfo.Instance.PlayerScore.Add(GetComponent<DashAbility>().CountOfSuccessDash);
         }
 
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         public void CmdChangeScore(int score, string playerName)
         {
             RpcChangeScore(score, playerName);
@@ -23,7 +23,7 @@ namespace Player
             WinGame.Instance.CheckWin(score, playerName);
         }
 
-        [ObserversRpc]
+        [ObserversRpc(ExcludeServer = true)]
         private void RpcChangeScore(int score, string playerName)
         {
             if (IsServerInitialized) return;

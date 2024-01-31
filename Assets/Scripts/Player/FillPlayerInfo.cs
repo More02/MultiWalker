@@ -36,6 +36,7 @@ namespace Player
             {
                 _canvasPanelHolder.GetChild(i).GetChild(0).GetComponent<TMP_Text>().SetText(PlayerNames[i]);
             }
+            Debug.Log("RenameAllPlayers");
         }
 
         public async Task RecountAllStats()
@@ -49,6 +50,8 @@ namespace Player
             {
                 _canvasPanelHolder.GetChild(i).GetChild(1).GetComponent<TMP_Text>().SetText(PlayerScore[i].ToString());
             }
+
+            Debug.Log("RecountAllStats");
         }
     }
 }

@@ -15,13 +15,21 @@ namespace Movement
 
         private void OnEnable()
         {
-            InstanceFinder.ClientManager.OnClientConnectionState += SetTarget;
+           // InstanceFinder.ClientManager.OnClientConnectionState += SetTarget;
+            SetTarget();
         }
-
-        public void SetTarget(ClientConnectionStateArgs сlientConnectionStateArgs)
+        
+        public void SetTarget()
         {
             ThirdPersonController.Instance.Target = transform;
+            Debug.Log("SetTarget");
         }
+
+        // public void SetTarget(ClientConnectionStateArgs сlientConnectionStateArgs)
+        // {
+        //     ThirdPersonController.Instance.Target = transform;
+        //     Debug.Log("SetTarget");
+        // }
 
         // public override void OnStartLocalPlayer()
         // {

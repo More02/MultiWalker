@@ -21,11 +21,12 @@ namespace Movement
         private void Awake()
         {
             Instance = this;
-            Cursor.lockState = CursorLockMode.Confined;
+            //Cursor.lockState = CursorLockMode.Confined;
         }
 
         private void LateUpdate()
         {
+           // Debug.Log(Target.gameObject.name);
             if (Target is null) return;
             GetMousePosition();
             FollowTarget();
@@ -40,6 +41,7 @@ namespace Movement
 
         private void FollowTarget()
         {
+            //Debug.Log("FollowTarget");
             var rotation = Quaternion.Euler(0f, _currentRotationX, 0f);
             _offset = new Vector3(0f, Height, -Distance);
             _offset = rotation * _offset;

@@ -80,14 +80,14 @@ namespace Movement
             collisionDashAbility._isAvailableForDash = true;
         }
 
-        [ServerRpc]
+        [ServerRpc(RequireOwnership = false)]
         private void CmdChangeIsDashed(DashAbility collisionDashAbility, bool isDashed)
         {
             RpcChangeIsDashed(collisionDashAbility, isDashed);
             ChangeIsDashed(collisionDashAbility, isDashed);
         }
 
-        [ObserversRpc]
+        [ObserversRpc(ExcludeServer = true)]
         private void RpcChangeIsDashed(DashAbility collisionDashAbility, bool isDashed)
         {
             if (!IsServerInitialized) ChangeIsDashed(collisionDashAbility, isDashed);
