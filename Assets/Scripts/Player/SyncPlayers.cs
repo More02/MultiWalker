@@ -16,7 +16,7 @@ namespace Player
         private void Start()
         {
            // InstanceFinder.ClientManager.OnClientConnectionState += Init;
-           StartCoroutine(Init_Routine());
+          // StartCoroutine(Init_Routine());
            //Init();
         }
 
@@ -25,7 +25,7 @@ namespace Player
         //     Init();
         // }
 
-        private void Init()
+        public void Init()
         {
             Debug.Log("Init");
             Debug.Log("IsClientInitialized = "+IsClientInitialized);
@@ -47,7 +47,7 @@ namespace Player
 
         private IEnumerator Init_Routine()
         {
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.5f);
             Init();
         }
 
