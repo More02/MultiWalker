@@ -9,10 +9,13 @@ namespace Player
     {
         public UnityEvent OnReadyToSpawnPlayerInfoPrefabs;
         public UnityEvent OnReadySavePlayersNames;
+        
         private void Start()
         {
             OnReadyToSpawnPlayerInfoPrefabs.AddListener(gameObject.GetComponent<SyncPlayers>().Init);
             OnReadySavePlayersNames.AddListener(gameObject.GetComponent<PlayerName>().Init);
+           
+            //JUST COMMENTED
             StartCoroutine(Init_Routine());
            
             // CmdRenamePlayer();
@@ -30,7 +33,7 @@ namespace Player
         [ServerRpc(RequireOwnership = false)]
         public void CmdRenamePlayer()
         {
-            Debug.Log("CmdRenamePlayer");
+            Debug.Log("[RenamePlayerGameObject] CmdRenamePlayerGameObject");
             RpcRenamePlayer();
             RenamePlayer();
         }
@@ -45,10 +48,19 @@ namespace Player
 
         private void RenamePlayer()
         {
-            gameObject.name = "Player " + FillPlayerInfo.Instance.CanvasPanelHolder.childCount;
-            Debug.Log("RenamePlayer");
+            if (!char.IsDigit(gameObject.name[^1]))
+            {
+                gameObject.name = "Player " + (FillPlayerInfo.Instance.CanvasPanelHolder.childCount + 1);
+                Debug.Log("[RenamePlayerGameObject] RenamePlayerGameObject");
+            }
+            
             OnReadySavePlayersNames.Invoke();
             OnReadyToSpawnPlayerInfoPrefabs.Invoke();
+
+            Debug.Log("FillPlayerInfo.Instance.PlayerNames.Count = " + FillPlayerInfo.Instance.PlayerNames.Count);
+
+            //if ((!char.IsDigit(gameObject.name[^1])) || (Owner.IsLocalClient))
+            
         }
     }
 }

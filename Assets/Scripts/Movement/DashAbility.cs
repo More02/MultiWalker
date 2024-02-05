@@ -45,7 +45,7 @@ namespace Movement
 
         private void Update()
         {
-            if (!IsOwner) return;
+            if (!Owner.IsLocalClient) return;
             if (!Input.GetMouseButtonDown(0)) return;
             if (IsDashing) return;
             IsDashing = true;
@@ -56,7 +56,7 @@ namespace Movement
 
         private async void OnCollisionEnter(Collision collision)
         {
-            if (!IsOwner) return;
+            if (!Owner.IsLocalClient) return;
             _rigidbody.velocity = Vector3.zero;
 
             if (!collision.gameObject.CompareTag("Player")) return;
