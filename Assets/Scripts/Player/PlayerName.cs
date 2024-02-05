@@ -9,7 +9,16 @@ namespace Player
     public class PlayerName : NetworkBehaviour
     {
         [field: SyncVar(OnChange = nameof(OnNameUpdate))]
-        private string Name { get; set; }
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                gameObject.name = value;
+            } 
+        }
 
         // private void Start()
         // {

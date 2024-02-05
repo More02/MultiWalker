@@ -1,4 +1,5 @@
 using System.Collections;
+using FishNet;
 using FishNet.Object;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,12 +13,12 @@ namespace Player
         
         private void Start()
         {
-            OnReadyToSpawnPlayerInfoPrefabs.AddListener(gameObject.GetComponent<SyncPlayers>().Init);
-            OnReadySavePlayersNames.AddListener(gameObject.GetComponent<PlayerName>().Init);
+            OnReadyToSpawnPlayerInfoPrefabs.AddListener(GetComponent<SyncPlayers>().Init);
+            OnReadySavePlayersNames.AddListener(GetComponent<PlayerName>().Init);
            
             //JUST COMMENTED
-            StartCoroutine(Init_Routine());
-           
+            if (Owner.IsLocalClient) StartCoroutine(Init_Routine());
+            
             // CmdRenamePlayer();
 
             // RpcRenamePlayer();
@@ -38,11 +39,10 @@ namespace Player
             RenamePlayer();
         }
 
-        [ObserversRpc(ExcludeServer = false)]
+        [ObserversRpc(ExcludeServer = true)]
         private void RpcRenamePlayer()
         {
-            if (IsServerInitialized) return;
-            RenamePlayer();
+            if (!(IsServerInitialized && IsClientInitialized)) RenamePlayer();
             Debug.Log("RpcRenamePlayer");
         }
 
@@ -50,14 +50,13 @@ namespace Player
         {
             if (!char.IsDigit(gameObject.name[^1]))
             {
-                gameObject.name = "Player " + (FillPlayerInfo.Instance.CanvasPanelHolder.childCount + 1);
+                GetComponent<PlayerName>().Name = "Player " + (InstanceFinder.ClientManager.Clients.Values.Count);
                 Debug.Log("[RenamePlayerGameObject] RenamePlayerGameObject");
+                OnReadySavePlayersNames.Invoke();
+                OnReadyToSpawnPlayerInfoPrefabs.Invoke();
             }
-            
-            OnReadySavePlayersNames.Invoke();
-            OnReadyToSpawnPlayerInfoPrefabs.Invoke();
 
-            Debug.Log("FillPlayerInfo.Instance.PlayerNames.Count = " + FillPlayerInfo.Instance.PlayerNames.Count);
+            Debug.Log("FillPlayerInfo.Instance.PlayerNames.Count = " + InstanceFinder.ClientManager.Clients.Values.Count);
 
             //if ((!char.IsDigit(gameObject.name[^1])) || (Owner.IsLocalClient))
             

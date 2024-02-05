@@ -15,8 +15,8 @@ namespace Player
         private string _playerName;
 
         public static FillPlayerInfo Instance { get; private set; }
-        public List<string> PlayerNames { get; } = new();
-        public List<int> PlayerScore { get; } = new();
+        public List<string> PlayerNames = new();
+        public List<int> PlayerScore = new();
         public GameObject PlayerInfoPrefab => _playerInfoPrefab;
         public Transform CanvasPanelHolder => _canvasPanelHolder;
 

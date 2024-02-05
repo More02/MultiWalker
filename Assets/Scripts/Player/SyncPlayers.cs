@@ -40,13 +40,14 @@ namespace Player
             // Debug.Log("IsClientInitialized = "+IsClientInitialized);
             // Debug.Log("OnStartClientCalled = "+OnStartClientCalled);
             // Debug.Log("Owner.IsLocalClient = "+Owner.IsLocalClient);
+            
             if (Owner.IsLocalClient)
             {
                // Debug.Log("Init Owner.IsLocalClient");
                 Debug.Log("[SyncPlayers] Init Owner.IsLocalClient");
                 SyncListOfPlayers();
+                gameObject.GetComponent<CreatePlayerInfoPrefab>().CmdInstantiatePlayerInfoPrefab();
             }
-            gameObject.GetComponent<CreatePlayerInfoPrefab>().CmdInstantiatePlayerInfoPrefab();
         }
         
         // private void Init(ClientConnectionStateArgs сlientConnectionStateArgs)
@@ -57,10 +58,11 @@ namespace Player
 
         private void SyncListOfPlayers()
         {
-            foreach (var playerIdentity in InstanceFinder.ClientManager.Connection.Objects.Where(playerIdentity =>
-                         playerIdentity != Owner.IsLocalClient))
+            foreach (var playerIdentity in InstanceFinder.ClientManager.Clients.Values.Where(playerIdentity =>
+                         playerIdentity != Owner))
             {
                 gameObject.GetComponent<CreatePlayerInfoPrefab>().InstantiatePlayerInfoPrefab();
+                FillPlayerInfo.Instance.PlayerNames.Add(playerIdentity.FirstObject.gameObject.name);
             }
         }
     }
