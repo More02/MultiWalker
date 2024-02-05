@@ -34,7 +34,7 @@ namespace Movement
 
         private void SetAnimatorBools()
         {
-            if (!IsOwner) return;
+            if (!Owner.IsLocalClient) return;
             if (_animator is null) return;
             if ((Input.GetAxis("Horizontal") != 0) || (Input.GetAxis("Vertical") != 0))
             {

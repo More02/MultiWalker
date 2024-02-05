@@ -38,8 +38,8 @@ namespace Movement
 
         private void FixedUpdate()
         {
-            if (!IsOwner) return;
-           // Debug.Log("IsOwner from MovementMethod = "+IsOwner + " game object name = " + gameObject.name);
+            if (!Owner.IsLocalClient) return;
+           // Debug.Log("Owner.IsLocalClient from MovementMethod = "+Owner.IsLocalClient + " game object name = " + gameObject.name);
             Move();
         }
 

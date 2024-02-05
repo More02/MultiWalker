@@ -11,11 +11,11 @@ namespace Player
         [ServerRpc(RequireOwnership = false)]
         public void CmdInstantiatePlayerInfoPrefab()
         {
-            Debug.Log("CmdInstantiatePlayerInfoPrefab");
+            Debug.Log("[CreatePlayerInfoPrefab] CmdInstantiatePlayerInfoPrefab");
             RpcInstantiatePlayerInfoPrefab();
             InstantiatePlayerInfoPrefab();
         }
-
+        
         [ObserversRpc(ExcludeServer = true)]
         private void RpcInstantiatePlayerInfoPrefab()
         {
@@ -24,7 +24,7 @@ namespace Player
 
         public async void InstantiatePlayerInfoPrefab()
         {
-            Debug.Log("InstantiatePlayerInfoPrefab");
+            Debug.Log("[CreatePlayerInfoPrefab] InstantiatePlayerInfoPrefab");
             Instantiate(FillPlayerInfo.Instance.PlayerInfoPrefab, FillPlayerInfo.Instance.CanvasPanelHolder);
             await FillPlayerInfo.Instance.RenameAllPlayers();
             await FillPlayerInfo.Instance.RecountAllStats();

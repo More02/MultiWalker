@@ -4,6 +4,7 @@ using System.Linq;
 using FishNet;
 using FishNet.Object;
 using FishNet.Transporting;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Player
@@ -16,7 +17,9 @@ namespace Player
         private void Start()
         {
            // InstanceFinder.ClientManager.OnClientConnectionState += Init;
-          // StartCoroutine(Init_Routine());
+           
+           //WAS COMMENTED
+           // StartCoroutine(Init_Routine());
            //Init();
         }
 
@@ -24,16 +27,23 @@ namespace Player
         // {
         //     Init();
         // }
-
+        
+        private IEnumerator Init_Routine()
+        {
+            yield return new WaitForSeconds(1f);
+            Init();
+        }
+        
         public void Init()
         {
-            Debug.Log("Init");
-            Debug.Log("IsClientInitialized = "+IsClientInitialized);
-            Debug.Log("OnStartClientCalled = "+OnStartClientCalled);
-            Debug.Log("IsOwner = "+IsOwner);
-            if (IsOwner)
+            // Debug.Log("Init");
+            // Debug.Log("IsClientInitialized = "+IsClientInitialized);
+            // Debug.Log("OnStartClientCalled = "+OnStartClientCalled);
+            // Debug.Log("Owner.IsLocalClient = "+Owner.IsLocalClient);
+            if (Owner.IsLocalClient)
             {
-                Debug.Log("Init IsOwner");
+               // Debug.Log("Init Owner.IsLocalClient");
+                Debug.Log("[SyncPlayers] Init Owner.IsLocalClient");
                 SyncListOfPlayers();
             }
             gameObject.GetComponent<CreatePlayerInfoPrefab>().CmdInstantiatePlayerInfoPrefab();
@@ -41,20 +51,14 @@ namespace Player
         
         // private void Init(ClientConnectionStateArgs сlientConnectionStateArgs)
         // {
-        //     if (IsOwner) SyncListOfPlayers();
+        //     if (Owner.IsLocalClient) SyncListOfPlayers();
         //     gameObject.GetComponent<CreatePlayerInfoPrefab>().CmdInstantiatePlayerInfoPrefab();
         // }
-
-        private IEnumerator Init_Routine()
-        {
-            yield return new WaitForSeconds(0.5f);
-            Init();
-        }
 
         private void SyncListOfPlayers()
         {
             foreach (var playerIdentity in InstanceFinder.ClientManager.Connection.Objects.Where(playerIdentity =>
-                         playerIdentity != IsOwner))
+                         playerIdentity != Owner.IsLocalClient))
             {
                 gameObject.GetComponent<CreatePlayerInfoPrefab>().InstantiatePlayerInfoPrefab();
             }
