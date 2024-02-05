@@ -12,14 +12,14 @@ namespace Player
         public void CmdInstantiatePlayerInfoPrefab()
         {
             Debug.Log("[CreatePlayerInfoPrefab] CmdInstantiatePlayerInfoPrefab");
-            RpcInstantiatePlayerInfoPrefab();
             InstantiatePlayerInfoPrefab();
+            RpcInstantiatePlayerInfoPrefab();
         }
         
         [ObserversRpc(ExcludeServer = true)]
         private void RpcInstantiatePlayerInfoPrefab()
         {
-            if (!IsServerInitialized) InstantiatePlayerInfoPrefab();
+            if (!(IsServerInitialized && IsClientInitialized)) InstantiatePlayerInfoPrefab();
         }
 
         public async void InstantiatePlayerInfoPrefab()
