@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using FishNet;
+using FishNet.Component.Spawning;
 using UnityEngine;
 
 namespace Spawn
@@ -8,7 +10,7 @@ namespace Spawn
     /// </summary>
     public class SpawnPointsHolder : MonoBehaviour
     {
-        public List<Transform> AllSpawnPoints { get; } = new();
+        public List<Transform> AllSpawnPoints = new();
 
         public static SpawnPointsHolder Instance { get; private set; }
 
@@ -18,6 +20,7 @@ namespace Spawn
         {
             Instance = this;
             FillListOfPoints();
+            InstanceFinder.NetworkManager.gameObject.GetComponent<PlayerSpawner>().Spawns = AllSpawnPoints.ToArray();
         }
 
         public void FillListOfPoints()
