@@ -49,36 +49,42 @@ namespace GameSession
         {
             yield return new WaitForSeconds(WinGame.Instance.DelayTime);
 
-            var networkManager = gameObject.GetComponent<NetworkManager>();
+            var networkManager = InstanceFinder.NetworkManager;
             if (networkManager is null)
             {
                 yield break;
             }
 
-            SpawnPointsHolder.Instance.FillListOfPoints();
+            //SpawnPointsHolder.Instance.FillListOfPoints();
 
             for (var i = 0; i < FillPlayerInfo.Instance.PlayerScore.Count; i++)
             {
                 FillPlayerInfo.Instance.PlayerScore[i] = 0;
             }
-            
-            foreach (var playerIdentity in InstanceFinder.ClientManager.Connection.Objects)
+
+            var stepCount = 0;
+            foreach (var playerIdentity in InstanceFinder.ClientManager.Clients.Values)
             {
-                var randomPlace = Random.Range(0, SpawnPointsHolder.Instance.AllSpawnPoints.Count - 1);
-                var player = playerIdentity.transform;
-                player.position = SpawnPointsHolder.Instance.AllSpawnPoints[randomPlace].position;
-                player.rotation = SpawnPointsHolder.Instance.AllSpawnPoints[randomPlace].rotation;
-                SpawnPointsHolder.Instance.AllSpawnPoints.RemoveAt(randomPlace);
+                //var randomPlace = Random.Range(0, SpawnPointsHolder.Instance.AllSpawnPoints.Count - 1);
+                //var randomPlace = stepCount;
+                var player = playerIdentity.FirstObject.transform;
+                Debug.Log(player.gameObject.name);
+                player.position = SpawnPointsHolder.Instance.AllSpawnPoints[stepCount].position;
+                player.rotation = SpawnPointsHolder.Instance.AllSpawnPoints[stepCount].rotation;
+               // SpawnPointsHolder.Instance.AllSpawnPoints.RemoveAt(randomPlace);
                 player.gameObject.GetComponent<PlayerScore>().CmdChangeScore(0, player.gameObject.name);
-                if (playerIdentity.IsClientInitialized)
-                {
+                // if (playerIdentity.IsClientInitialized)
+                // {
                     SetActiveWinCanvas.Instance.CmdSetActiveWinPrefab(false);
-                }
+               // }
 
                 WinGame.Instance.WinCanvas.SetActive(false);
                 player.gameObject.GetComponent<DashAbility>().CountOfSuccessDash = 0;
                 DashAbility.Instance.IsWin = false;
+
+                stepCount++;
             }
+           // SpawnPointsHolder.Instance.AllSpawnPoints.Clear();
         }
     }
 }
